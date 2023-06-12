@@ -351,6 +351,8 @@ defmodule Flyster.Accounts do
     end
   end
 
+  ### Roles
+
   @doc """
   Creates a role.
 
@@ -363,9 +365,23 @@ defmodule Flyster.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_role(attrs) do
+  def create_role(role) do
     %Role{}
-    |> Role.role_changeset(attrs)
+    |> Role.changeset(%{name: role})
     |> Repo.insert()
+  end
+
+  @doc ~S"""
+  Gets all the roles in the database
+
+  ## Examples
+
+      iex> all_roles()
+      [%Role{id: x, name: y}, %Role{id: z, name: r}, ...]
+
+  """
+
+  def all_roles do
+    Repo.all(Role)
   end
 end
