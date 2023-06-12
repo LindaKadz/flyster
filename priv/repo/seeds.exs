@@ -15,11 +15,11 @@ alias Flyster.Accounts.User
 alias Flyster.Accounts.Role
 alias Flyster.Repo
 
-modules = [User, Role]
+modules = [Role, User]
 
 Enum.each(modules, fn module -> Repo.delete_all(module) end)
 
-roles = ["Pole Dancer", "Stripper", "Photographer", "Instructor", "Lyra Performer", "Silks Performer"]
+roles = ["Instructor", "Lyra Performer", "Photographer", "Pole Dancer", "Silks Performer", "Stripper"]
 
 Enum.each(roles, fn role -> Accounts.create_role(role) end)
 IO.puts "Roles Created!"
