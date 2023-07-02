@@ -1,4 +1,7 @@
 defmodule FlysterWeb.UserAuth do
+  @moduledoc """
+   Authentication verification module
+  """
   use FlysterWeb, :verified_routes
 
   import Plug.Conn

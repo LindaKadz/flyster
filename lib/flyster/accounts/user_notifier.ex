@@ -1,4 +1,8 @@
 defmodule Flyster.Accounts.UserNotifier do
+  @moduledoc """
+   Mailer for sending emails
+  """
+
   import Swoosh.Email
 
   alias Flyster.Mailer
