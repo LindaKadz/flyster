@@ -1,4 +1,7 @@
 defmodule FlysterWeb.Telemetry do
+  @moduledoc """
+   Telementry metrics setup
+  """
   use Supervisor
   import Telemetry.Metrics
 

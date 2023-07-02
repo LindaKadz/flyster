@@ -1,4 +1,8 @@
 defmodule Flyster.Accounts.UserToken do
+  @moduledoc """
+   Generates user tokens for authentication
+  """
+
   use Ecto.Schema
   import Ecto.Query
   alias Flyster.Accounts.UserToken
