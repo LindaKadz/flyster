@@ -43,7 +43,7 @@ defmodule Flyster.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :city, :country, :phone_number])
+    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :city, :country, :phone_number, :role_id, :email])
     |> validate_email(opts)
     |> validate_password(opts)
     |> validate_user_details
