@@ -18,7 +18,7 @@ defmodule Flyster.AccountsFixtures do
     {:ok, user} =
       attrs
       |> valid_user_attributes()
-      |> Flyster.Accounts.register_user()
+      |> Flyster.Context.Accounts.register_user()
 
     user
   end

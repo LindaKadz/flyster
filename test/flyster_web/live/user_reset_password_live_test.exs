@@ -4,7 +4,7 @@ defmodule FlysterWeb.UserResetPasswordLiveTest do
   import Phoenix.LiveViewTest
   import Flyster.AccountsFixtures
 
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
 
   setup do
     user = user_fixture()

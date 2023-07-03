@@ -1,7 +1,7 @@
 defmodule FlysterWeb.UserRegistrationLive do
   use FlysterWeb, :live_view
 
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
   alias Flyster.Accounts.User
 
   def render(assigns) do

@@ -1,7 +1,7 @@
 defmodule Flyster.AccountsTest do
   use Flyster.DataCase
 
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
 
   import Flyster.AccountsFixtures
   alias Flyster.Accounts.{User, UserToken}

@@ -1,7 +1,7 @@
 defmodule FlysterWeb.UserResetPasswordLive do
   use FlysterWeb, :live_view
 
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
 
   def render(assigns) do
     ~H"""

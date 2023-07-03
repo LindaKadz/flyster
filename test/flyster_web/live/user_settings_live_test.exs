@@ -1,7 +1,7 @@
 defmodule FlysterWeb.UserSettingsLiveTest do
   use FlysterWeb.ConnCase
 
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
   import Phoenix.LiveViewTest
   import Flyster.AccountsFixtures
 

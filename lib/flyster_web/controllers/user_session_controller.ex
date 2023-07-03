@@ -1,7 +1,7 @@
 defmodule FlysterWeb.UserSessionController do
   use FlysterWeb, :controller
 
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
   alias FlysterWeb.UserAuth
 
   def create(conn, %{"_action" => "registered"} = params) do

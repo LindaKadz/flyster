@@ -10,9 +10,9 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.]
 
-alias Flyster.Accounts
 alias Flyster.Accounts.User
 alias Flyster.Accounts.Role
+alias Flyster.Context.Accounts
 alias Flyster.Repo
 
 modules = [Role, User]

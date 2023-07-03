@@ -1,4 +1,4 @@
-defmodule Flyster.Accounts do
+defmodule Flyster.Context.Accounts do
   @moduledoc """
   The Accounts context.
   """
