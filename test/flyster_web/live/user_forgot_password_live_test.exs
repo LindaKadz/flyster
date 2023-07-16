@@ -4,7 +4,7 @@ defmodule FlysterWeb.UserForgotPasswordLiveTest do
   import Phoenix.LiveViewTest
   import Flyster.AccountsFixtures
 
-  alias Flyster.Context.Accounts
+  alias Flyster.Accounts
   alias Flyster.Repo
 
   describe "Forgot password page" do

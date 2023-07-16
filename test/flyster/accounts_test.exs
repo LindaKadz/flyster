@@ -97,7 +97,7 @@ defmodule Flyster.AccountsTest do
   describe "change_user_registration/2" do
     test "returns a changeset" do
       assert %Ecto.Changeset{} = changeset = Accounts.change_user_registration(%User{})
-      assert changeset.required == [:password, :email]
+      assert changeset.required == [:first_name, :last_name, :username, :city, :country, :password, :email]
     end
 
     test "allows fields to be set" do
@@ -503,6 +503,15 @@ defmodule Flyster.AccountsTest do
   describe "inspect/2 for the User module" do
     test "does not include password" do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
+    end
+  end
+
+  describe "role" do
+    test "role can be created" do
+      assert {:ok, _role} = Accounts.create_role("New Role")
+    end
+
+    test "role_id can be retrieved using the role name" do
     end
   end
 end

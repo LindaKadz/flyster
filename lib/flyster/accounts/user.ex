@@ -51,6 +51,7 @@ defmodule Flyster.Accounts.User do
     |> validate_email(opts)
     |> validate_password(opts)
     |> validate_user_details
+    |> foreign_key_constraint(:role_id)
   end
 
   defp validate_email(changeset, opts) do

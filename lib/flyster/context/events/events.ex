@@ -1,4 +1,4 @@
-defmodule Flyster.Context.Events. do
+defmodule Flyster.Context.Events do
   @moduledoc """
    Events Context
   """
