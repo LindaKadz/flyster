@@ -6,7 +6,7 @@ defmodule Flyster.Context.Events do
   import Ecto.Query, warn: false
   alias Flyster.Repo
 
-  alias Flyster.Events.{EventType}
+  alias Flyster.Events.{Event, EventType}
 
   ### Event Types
 
@@ -40,5 +40,39 @@ defmodule Flyster.Context.Events do
 
   def all_event_types do
     Repo.all(EventType)
+  end
+
+  ### Events
+
+  @doc """
+  Creates an event.
+
+  ## Examples
+
+      iex> create_event(%{name: "Event New", time: "12:00"...})
+      {:ok, %Event{}}
+
+      iex> create_event(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_event(event_params) do
+    %Event{}
+    |> Event.changeset(event_params)
+    |> Repo.insert()
+  end
+
+  @doc ~S"""
+  Gets all the events in the database
+
+  ## Examples
+
+      iex> all_events()
+      [%Event{id: x, name: y}, %Event{id: z, name: r}, ...]
+
+  """
+
+  def all_events do
+    Repo.all(Event)
   end
 end

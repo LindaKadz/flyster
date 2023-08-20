@@ -15,7 +15,7 @@ defmodule Flyster.Events.EventType do
   def changeset(event_type, attrs) do
     event_type
     |> cast(attrs, [:name])
-    |> validate_required(:name)
+    |> validate_required([:name])
     |> unique_constraint(:name)
   end
 end
