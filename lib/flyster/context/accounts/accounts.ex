@@ -1,4 +1,4 @@
-defmodule Flyster.Accounts do
+defmodule Flyster.Context.Accounts do
   @moduledoc """
   The Accounts context.
   """
@@ -383,5 +383,22 @@ defmodule Flyster.Accounts do
 
   def all_roles do
     Repo.all(Role)
+  end
+
+  @doc ~S"""
+  Gets the role id given the name of the role
+
+  ## Examples
+
+      iex> role_id()
+      1
+
+  """
+
+  def role_id(role) do
+    case Repo.get_by(Role, name: role) do
+      %Role{id: id} -> id
+      nil -> 0
+    end
   end
 end

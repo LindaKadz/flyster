@@ -1,7 +1,7 @@
 defmodule FlysterWeb.UserConfirmationLive do
   use FlysterWeb, :live_view
 
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
 
   def render(%{live_action: :edit} = assigns) do
     ~H"""

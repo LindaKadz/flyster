@@ -18,6 +18,7 @@ defmodule Flyster.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     belongs_to :role, Flyster.Accounts.Role
+    has_many :events, Flyster.Context.Events, foreign_key: :host_id
 
     timestamps()
   end
@@ -51,6 +52,7 @@ defmodule Flyster.Accounts.User do
     |> validate_email(opts)
     |> validate_password(opts)
     |> validate_user_details
+    |> foreign_key_constraint(:role_id)
   end
 
   defp validate_email(changeset, opts) do

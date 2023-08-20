@@ -2,7 +2,7 @@ defmodule FlysterWeb.UserAuthTest do
   use FlysterWeb.ConnCase, async: true
 
   alias Phoenix.LiveView
-  alias Flyster.Accounts
+  alias Flyster.Context.Accounts
   alias FlysterWeb.UserAuth
   import Flyster.AccountsFixtures
 
