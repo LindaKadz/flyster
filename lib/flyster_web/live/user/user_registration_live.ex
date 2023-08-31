@@ -120,7 +120,7 @@ defmodule FlysterWeb.UserRegistrationLive do
               </p>
             </div>
             <p>
-              <.input field={@form[:role_id]} options={all_roles} type="select" label="Choose your Sport" required />
+              <.input field={@form[:role_id]} options={all_roles()} type="select" label="Choose your Sport" required />
             </p>
           </div>
         </div>
@@ -151,6 +151,7 @@ defmodule FlysterWeb.UserRegistrationLive do
   def handle_event("save", %{"user" => user_params}, socket) do
     case Accounts.register_user(user_params) do
       {:ok, user} ->
+        IO.inspect("Saved")
         {:ok, _} =
           Accounts.deliver_user_confirmation_instructions(
             user,

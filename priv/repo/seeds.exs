@@ -13,6 +13,7 @@
 alias Flyster.Accounts.User
 alias Flyster.Accounts.Role
 alias Flyster.Context.Accounts
+alias Flyster.Context.Events
 alias Flyster.Events.EventType
 alias Flyster.Repo
 
@@ -25,7 +26,7 @@ roles = ["Instructor", "Lyra Performer", "Photographer", "Pole Dancer", "Silks P
 Enum.each(roles, fn role -> Accounts.create_role(role) end)
 IO.puts "Roles Created!"
 
-events = ["Retreat", "Photoshoot", "Pole in the Park"]
+events = [%{name: "Retreat"}, %{name: "Photoshoot"}, %{name: "Pole in the Park"}]
 
 Enum.each(events, fn event -> Events.create_event(event) end)
 IO.puts "Events Created!"
