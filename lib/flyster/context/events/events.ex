@@ -75,4 +75,31 @@ defmodule Flyster.Context.Events do
   def all_events do
     Repo.all(Event)
   end
+
+  @doc ~S"""
+  Gets an event from the database
+
+  ## Examples
+
+      iex> find_event(id)
+      %Event{id: x, name: y}
+
+  """
+
+  def find_event(id) do
+    Repo.get(Event, id)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking event changes.
+
+  ## Examples
+
+      iex> change_event_creation(event)
+      %Ecto.Changeset{data: %Event{}}
+
+  """
+  def change_event_creation(%Event{} = event, attrs \\ %{}) do
+    Event.changeset(event, attrs)
+  end
 end

@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
+    <meta name="csrf-token" content={Plug.CSRFProtection.get_csrf_token()} />
     <.live_title suffix=" · Phoenix Framework">
       <%= assigns[:page_title] || "Flyster" %>
     </.live_title>
@@ -16,6 +17,22 @@
       <%= if @current_user do %>
         <li class="text-[0.8125rem] leading-6 text-zinc-900">
           <%= @current_user.email %>
+        </li>
+        <li>
+          <.link
+            href={~p"/events/index"}
+            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+          >
+            Events
+          </.link>
+        </li>
+        <li>
+          <.link
+            href={~p"/events/new"}
+            class="text-[0.8125rem] leading-6 text-zinc-900 font-semibold hover:text-zinc-700"
+          >
+            Create Event
+          </.link>
         </li>
         <li>
           <.link

@@ -6,6 +6,17 @@ defmodule FlysterWeb.EventsIndexLive do
   def render(assigns) do
     ~H"""
       All events
+
+      <div class="space-y-12 divide-y">
+      <%= for event <- @events do %>
+       <div class="grid gap-6">
+        <%= event.name %>
+        <%= event.description %>
+        <%= event.rules %>
+        <%= event.location %>
+       </div>
+      <% end %>
+      </div>
     """
   end
 

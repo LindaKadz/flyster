@@ -17,7 +17,7 @@ alias Flyster.Context.Events
 alias Flyster.Events.EventType
 alias Flyster.Repo
 
-modules = [EventType, Role, User]
+modules = [User, Role, EventType]
 
 Enum.each(modules, fn module -> Repo.delete_all(module) end)
 
@@ -26,7 +26,7 @@ roles = ["Instructor", "Lyra Performer", "Photographer", "Pole Dancer", "Silks P
 Enum.each(roles, fn role -> Accounts.create_role(role) end)
 IO.puts "Roles Created!"
 
-events = [%{name: "Retreat"}, %{name: "Photoshoot"}, %{name: "Pole in the Park"}]
+event_types = ["Retreat", "Photoshoot", "Pole in the Park", "Pop Up"]
 
-Enum.each(events, fn event -> Events.create_event(event) end)
-IO.puts "Events Created!"
+Enum.each(event_types, fn event -> Events.create_event_type(event) end)
+IO.puts "Event Types Created!"
