@@ -18,7 +18,7 @@ defmodule Flyster.Accounts.User do
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
     belongs_to :role, Flyster.Accounts.Role
-    has_many :events, Flyster.Context.Events, foreign_key: :host_id
+    has_many :events, Flyster.Events.Event, foreign_key: :host_id
 
     timestamps()
   end

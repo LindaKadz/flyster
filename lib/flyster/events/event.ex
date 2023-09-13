@@ -9,7 +9,7 @@ defmodule Flyster.Events.Event do
   schema "events" do
     field :name, :string
     field :time, :string
-    field :date, :naive_datetime
+    field :date, :string
     field :description, :string
     field :rules, :string
     field :price, :float

@@ -7,7 +7,7 @@ defmodule Flyster.Repo.Migrations.CreateEvents do
       add :event_type_id, references(:event_types), null: false
       add :host_id, references(:users, name: :host_id), null: false
       add :time, :string, null: false
-      add :date, :naive_datetime, null: false
+      add :date, :string, null: false
       add :description, :text, null: false
       add :rules, :text
       add :price, :float

@@ -120,7 +120,7 @@ defmodule FlysterWeb.UserRegistrationLive do
               </p>
             </div>
             <p>
-              <.input field={@form[:role_id]} options={all_roles} type="select" label="Choose your Sport" required />
+              <.input field={@form[:role_id]} options={all_roles()} type="select" label="Choose your Sport" required />
             </p>
           </div>
         </div>
