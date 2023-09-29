@@ -73,7 +73,7 @@ defmodule Flyster.Context.Events do
   """
 
   def all_events do
-    Repo.all(Event)
+    Repo.all(Event) |> Repo.preload(:user)
   end
 
   @doc ~S"""
@@ -87,7 +87,7 @@ defmodule Flyster.Context.Events do
   """
 
   def find_event(id) do
-    Repo.get(Event, id)
+    Repo.get(Event, id) |> Repo.preload(:user)
   end
 
   @doc """
@@ -101,5 +101,19 @@ defmodule Flyster.Context.Events do
   """
   def change_event_creation(%Event{} = event, attrs \\ %{}) do
     Event.changeset(event, attrs)
+  end
+
+  @doc ~S"""
+  Gets an event with all its attendees
+
+  ## Examples
+
+      iex> find_event_with_attendees(id)
+      %Event{id: x, name: y}
+
+  """
+
+  def find_event_with_attendees(id) do
+    id |> find_event |> Repo.preload(:attendees)
   end
 end
