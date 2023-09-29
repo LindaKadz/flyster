@@ -15,8 +15,11 @@ defmodule FlysterWeb.AttendingEventsLive do
 
   def handle_event("save", %{"attend_event" => event_params}, socket) do
     event = Events.find_event_with_attendees(event_params["id"])
-    attendees = event.attendees
+    attendees = [socket.assigns.current_user.id | event.attendees]
 
-    
+    {:noreply,
+      socket
+      |> put_flash(:info, "You have registered for #{event.name}")
+      |> redirect(to: ~p"/events/index")}
   end
 end
