@@ -6,7 +6,7 @@ defmodule Flyster.Context.Events do
   import Ecto.Query, warn: false
   alias Flyster.Repo
 
-  alias Flyster.Events.{Event, EventType}
+  alias Flyster.Events.{AttendingEvent, Event, EventType}
 
   ### Event Types
 
@@ -73,7 +73,7 @@ defmodule Flyster.Context.Events do
   """
 
   def all_events do
-    Repo.all(Event) |> Repo.preload(:user)
+    Repo.all(Event) |> Repo.preload(:user) |> Repo.preload(:attendees)
   end
 
   @doc ~S"""
@@ -115,5 +115,25 @@ defmodule Flyster.Context.Events do
 
   def find_event_with_attendees(id) do
     id |> find_event |> Repo.preload(:attendees)
+  end
+
+  ### Events
+
+  @doc """
+  Saves the information of the attendee and the event.
+
+  ## Examples
+
+      iex> save_attendee(%{user_id: "Event New", event_id: "12:00"...})
+      {:ok, %AttendingEvent{}}
+
+      iex> save_attendee(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def save_attendee(attendee_event_params) do
+    %AttendingEvent{}
+    |> AttendingEvent.changeset(attendee_event_params)
+    |> Repo.insert()
   end
 end

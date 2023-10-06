@@ -13,10 +13,9 @@ defmodule Flyster.Events.AttendingEvent do
     timestamps()
   end
 
-  def changeset(event_type, attrs) do
-    event_type
-    |> cast(attrs, [:name])
-    |> validate_required([:name])
-    |> unique_constraint(:name)
+  def changeset(attending_event, attrs) do
+    attending_event
+    |> cast(attrs, [:user_id, :event_id])
+    |> validate_required([:user_id, :event_id])
   end
 end
