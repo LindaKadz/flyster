@@ -9,9 +9,9 @@ defmodule FlysterWeb.EventsShowLive do
     """
   end
 
-  def mount(%{"id" => id}, _session, socket) do
-    event = Events.find_event(id)
-
-    {:ok, assign(socket, event: event)}
-  end
+  # def mount(%{"id" => id}, _session, socket) do
+  #   event = Events.find_event(id)
+  #
+  #   {:ok, assign(socket, event: event)}
+  # end
 end

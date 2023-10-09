@@ -7,6 +7,7 @@ defmodule Flyster.Context.Accounts do
   alias Flyster.Repo
 
   alias Flyster.Accounts.{Role, User, UserToken, UserNotifier}
+  alias Flyster.Context.Events
 
   ## Database getters
 
@@ -400,5 +401,19 @@ defmodule Flyster.Context.Accounts do
       %Role{id: id} -> id
       nil -> 0
     end
+  end
+
+  @doc ~S"""
+  Gets a user
+
+  ## Examples
+
+      iex> find_event_with_attendees(id)
+      %Event{id: x, name: y, attendees: [%User{id: x,}, %User{id: y}]}
+
+  """
+
+  def find_event_with_attendees(id) do
+    id |> Events.find_event |> Repo.preload(:attendees)
   end
 end

@@ -20,6 +20,9 @@ defmodule Flyster.Accounts.User do
     belongs_to :role, Flyster.Accounts.Role
     has_many :events, Flyster.Events.Event, foreign_key: :host_id
 
+    has_many :attending_events, Flyster.Events.AttendingEvent, on_delete: :delete_all
+    has_many :attended_events, through: [:attending_events, :event], foreign_key: :attendee_id
+
     timestamps()
   end
 
