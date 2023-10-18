@@ -136,4 +136,36 @@ defmodule Flyster.Context.Events do
     |> AttendingEvent.changeset(attendee_event_params)
     |> Repo.insert()
   end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for changing an event.
+
+  ## Examples
+
+      iex> change_event_details(event)
+      %Ecto.Changeset{data: %Event{}}
+
+  """
+  def change_event_details(event, attrs \\ %{}) do
+    Event.changeset(event, attrs)
+  end
+
+  @doc """
+  It updates the data saved in the database with new information
+
+  ## Examples
+
+      iex> apply_event_changes(event, %{email: ...})
+      {:ok, %Event{}}
+
+      iex> apply_event_changes(event, %{email: ...})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def apply_event_changes(event, attrs) do
+    event
+    |> change_event_details(attrs)
+    |> Repo.update()
+  end
+
 end
