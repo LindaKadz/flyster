@@ -1,7 +1,7 @@
 defmodule Flyster.AccountsFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Flyster.Accounts` context.
+  entities via the `Flyster.Context.Accounts` context.
   """
 
   alias Flyster.Context.Accounts
@@ -10,7 +10,7 @@ defmodule Flyster.AccountsFixtures do
   def valid_user_password, do: "hello world!"
 
   def valid_user_attributes(attrs \\ %{}) do
-    create_role("Instructor")
+    {:ok, role} = Accounts.create_role("Bar#{System.unique_integer()}")
 
     Enum.into(attrs, %{
       first_name: "Test",
@@ -18,7 +18,7 @@ defmodule Flyster.AccountsFixtures do
       phone_number: "1234567890",
       country: "USA",
       city: "LA",
-      role_id: Accounts.role_id("Instructor"),
+      role_id: role.id,
       username: "user_test",
       email: unique_user_email(),
       password: valid_user_password()

@@ -120,21 +120,49 @@ defmodule Flyster.Context.Events do
   ### Events
 
   @doc """
-  Saves the information of the attendee and the event.
+  Find out which action needs to happen to the user, then acts accordingly.
+  It will always return either :ok or :error
 
   ## Examples
 
-      iex> save_attendee(%{user_id: "Event New", event_id: "12:00"...})
-      {:ok, %AttendingEvent{}}
+      iex> update_attendee_list(%{user_id: "Event New", event_id: "12:00"...})
+      {:ok, %AttendingEvent{}, "Added" || "Removed"}
 
-      iex> save_attendee(%{field: bad_value})
+      iex> update_attendee_list(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def save_attendee(attendee_event_params) do
+
+  def update_attendee_list(event_attendee_params) do
+    event = find_event_with_attendees(event_attendee_params["event_id"])
+    user = Flyster.Context.Accounts.get_user!(event_attendee_params["user_id"])
+
+    if !Enum.member?(event.attendees, user) do
+      result = add_attendee_to_event_list(event_attendee_params)
+      Tuple.insert_at(result, 2, "Added")
+    else
+      result = remove_attendee_from_event_list(event_attendee_params)
+      Tuple.insert_at(result, 2, "Removed")
+    end
+  end
+
+  defp add_attendee_to_event_list(attendee_event_params) do
     %AttendingEvent{}
     |> AttendingEvent.changeset(attendee_event_params)
     |> Repo.insert()
+  end
+
+  defp remove_attendee_from_event_list(attendee_event_params) do
+    event_id = attendee_event_params["event_id"]
+    user_id = attendee_event_params["user_id"]
+
+    query = from e in AttendingEvent,
+              where: e.event_id == ^event_id and e.user_id == ^user_id
+
+    query
+    |> Repo.all()
+    |> List.first()
+    |> Repo.delete()
   end
 
   @doc """
