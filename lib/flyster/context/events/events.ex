@@ -146,37 +146,13 @@ defmodule Flyster.Context.Events do
     end
   end
 
-  @doc """
-  Saves the information of the attendee and the event.
-
-  ## Examples
-
-      iex> add_attendee_to_event_list(%{user_id: "Event New", event_id: "12:00"...})
-      {:ok, %AttendingEvent{}}
-
-      iex> add_attendee_to_event_list(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def add_attendee_to_event_list(attendee_event_params) do
+  defp add_attendee_to_event_list(attendee_event_params) do
     %AttendingEvent{}
     |> AttendingEvent.changeset(attendee_event_params)
     |> Repo.insert()
   end
 
-  @doc """
-  Deletes the information of the attendee from the event.
-
-  ## Examples
-
-      iex> remove_attendee_from_event_list(%{user_id: "Event New", event_id: "12:00"...})
-      {:ok, %AttendingEvent{}}
-
-      iex> remove_attendee_from_event_list(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def remove_attendee_from_event_list(attendee_event_params) do
+  defp remove_attendee_from_event_list(attendee_event_params) do
     event_id = attendee_event_params["event_id"]
     user_id = attendee_event_params["user_id"]
 
