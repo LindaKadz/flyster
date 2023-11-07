@@ -145,7 +145,6 @@ defmodule FlysterWeb.EventsNewLive do
 
   def mount(_params, _session, socket) do
     changeset = Events.change_event_creation(%Event{})
-    IO.inspect socket
 
     socket =
       socket
