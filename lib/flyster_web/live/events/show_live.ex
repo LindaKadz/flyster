@@ -43,7 +43,7 @@ defmodule FlysterWeb.EventsShowLive do
   end
 
   def mount(%{"id" => id}, _session, socket) do
-    event = Events.find_event(id)
+    event = Events.find_event_with_attendees(id)
     current_user = socket.assigns.current_user
 
     {:ok, assign(socket, event: event, current_user: current_user, attend_event_form: to_form(%{}, as: "attend_event"))}
