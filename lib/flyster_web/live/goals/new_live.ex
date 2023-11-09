@@ -109,7 +109,7 @@ defmodule FlysterWeb.GoalsNewLive do
           {:noreply,
             socket
             |> put_flash(:info, "Documented!")
-            |> redirect(to: ~p"/events/index")}
+            |> redirect(to: ~p"/goals/index")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
@@ -129,8 +129,8 @@ defmodule FlysterWeb.GoalsNewLive do
 
   defp privacy_status do
     goal_types = [
-      %{name: "Yes", value: true},
-      %{name: "No", value: false}
+      %{name: "Yes", value: false},
+      %{name: "No", value: true}
     ]
     Enum.map(goal_types, &{&1.name, &1.value})
   end

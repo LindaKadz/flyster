@@ -76,6 +76,7 @@ defmodule FlysterWeb.Router do
       live "/events/:id/edit", EventsEditLive, :edit
 
       #goals
+      live "/goals/index", GoalsIndexLive, :index
       live "/goals/new", GoalsNewLive, :new
     end
   end
