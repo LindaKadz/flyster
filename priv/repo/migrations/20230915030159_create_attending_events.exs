@@ -5,7 +5,7 @@ defmodule Flyster.Repo.Migrations.CreateAttendingEvents do
     create table(:attending_events) do
       add :user_id, references(:users), null: false
       add :event_id, references(:events), null: false
-      timestamps
+      timestamps()
     end
   end
 end

@@ -64,7 +64,7 @@ defmodule FlysterWeb.EventsEditLive do
     event = socket.assigns.event
 
     case Events.apply_event_changes(event, params["event"]) do
-      {:ok, applied_user} ->
+      {:ok, _applied_user} ->
         #TODO: Add a feature for sending emails to event attendeess when event details change
         info = "Event Details Changed!"
         {:noreply, socket |> put_flash(:info, info) |> redirect(to: ~p"/events/index")}

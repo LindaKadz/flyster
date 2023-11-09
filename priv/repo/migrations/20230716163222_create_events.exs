@@ -15,7 +15,7 @@ defmodule Flyster.Repo.Migrations.CreateEvents do
       add :location, :string, null: false
       add :currency, :string
 
-      timestamps
+      timestamps()
     end
   end
 end
