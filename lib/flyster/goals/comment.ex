@@ -8,16 +8,16 @@ defmodule Flyster.Goals.GoalComment do
 
   schema "goal_comments" do
     field :comment, :string
-    belongs_to :user, Flyster.Accounts.User
     belongs_to :goal, Flyster.Goals.Goal
+    belongs_to :creator, Flyster.Accounts.User
 
     timestamps()
   end
 
-  def changeset(event_type, attrs) do
-    event_type
-    |> cast(attrs, [:comment, :goal_id, :user_id])
-    |> validate_required([:comment, :goal_id, :user_id])
+  def changeset(goal_comment_type, attrs) do
+    goal_comment_type
+    |> cast(attrs, [:comment, :goal_id, :creator_id])
+    |> validate_required([:comment, :goal_id, :creator_id])
     |> validate_length(:comment, min: 1, max: 40)
   end
 end
