@@ -17,7 +17,7 @@ defmodule FlysterWeb.EventsIndexLive do
            <%= event.name %>
        </.link>
         <%= event.location %>
-        <%= event.user.username %>
+        <%= event.host.username %>
        </div>
       <% end %>
       </div>

@@ -10,15 +10,18 @@ defmodule Flyster.Goals.Goal do
     field :description, :string
     field :accomplished, :boolean, default: false
     field :accomplish_by, :string
-    belongs_to :user, Flyster.Accounts.User
+    field :category, :string
+    field :private, :boolean
+    belongs_to :creator, Flyster.Accounts.User
+    has_many :comments, Flyster.Goals.GoalComment
 
     timestamps()
   end
 
   def changeset(event_type, attrs) do
     event_type
-    |> cast(attrs, [:description, :accomplished, :accomplish_by, :user_id])
-    |> validate_required([:description, :accomplished, :accomplish_by])
+    |> cast(attrs, [:description, :accomplished, :accomplish_by, :creator_id, :category, :private])
+    |> validate_required([:description, :accomplish_by, :creator_id, :category, :private])
     |> validate_length(:description, min: 5, max: 60)
   end
 end

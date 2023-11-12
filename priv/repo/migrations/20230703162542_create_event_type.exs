@@ -5,7 +5,7 @@ defmodule Flyster.Repo.Migrations.CreateEventType do
     create table(:event_types) do
       add :name, :string
 
-      timestamps
+      timestamps()
     end
   end
 end

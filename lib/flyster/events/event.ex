@@ -18,7 +18,7 @@ defmodule Flyster.Events.Event do
     field :currency, :string
 
     belongs_to :event_type, Flyster.Events.EventType
-    belongs_to :user, Flyster.Accounts.User, foreign_key: :host_id
+    belongs_to :host, Flyster.Accounts.User, foreign_key: :host_id
     has_many :attending_events, Flyster.Events.AttendingEvent
     has_many :attendees, through: [:attending_events, :user]
 

@@ -22,6 +22,8 @@ defmodule Flyster.Accounts.User do
 
     has_many :attending_events, Flyster.Events.AttendingEvent, on_delete: :delete_all
     has_many :attended_events, through: [:attending_events, :event], foreign_key: :attendee_id
+    has_many :goals, Flyster.Goals.Goal, foreign_key: :creator_id
+    has_many :goal_comments, Flyster.Goals.GoalComment, foreign_key: :creator_id
 
     timestamps()
   end

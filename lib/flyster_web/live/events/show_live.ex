@@ -17,8 +17,8 @@ defmodule FlysterWeb.EventsShowLive do
     <div>
      <%= if @current_user && @event.user != @current_user do %>
        <.simple_form for={@attend_event_form} id="attend_event_form" phx-submit="update_event_attendees">
-         <.input field={@attend_event_form[:user_id]} type="hidden", value={@current_user.id} required />
-         <.input field={@attend_event_form[:event_id]} type="hidden", value={@event.id} required />
+         <.input field={@attend_event_form[:user_id]} type="hidden" value={@current_user.id} required />
+         <.input field={@attend_event_form[:event_id]} type="hidden" value={@event.id} required />
 
          <:actions>
            <%= if !Enum.member?(@event.attendees, @current_user) do %>
@@ -63,7 +63,7 @@ defmodule FlysterWeb.EventsShowLive do
         flash = if action == "Added", do: "We experienced a problem trying to register you to #{event.name}, please try again later.", else: "We experienced a problem trying to remove you from #{event.name} attendee list, please try again later."
         {:noreply,
          socket
-         |> put_flash(:error, "We experienced a problem trying to register you to #{event.name}, please try again later.")
+         |> put_flash(:error, flash)
          |> redirect(to: ~p"/events/index")}
     end
   end

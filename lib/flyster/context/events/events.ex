@@ -73,7 +73,7 @@ defmodule Flyster.Context.Events do
   """
 
   def all_events do
-    Repo.all(Event) |> Repo.preload(:user) |> Repo.preload(:attendees)
+    Repo.all(Event) |> Repo.preload(:host) |> Repo.preload(:attendees)
   end
 
   @doc ~S"""

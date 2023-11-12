@@ -4,8 +4,8 @@ defmodule Flyster.Repo.Migrations.CreateRoles do
   def change do
     create table(:roles) do
       add :name, :string
-      
-      timestamps
+
+      timestamps()
     end
   end
 end
