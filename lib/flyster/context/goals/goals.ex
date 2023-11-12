@@ -61,11 +61,11 @@ defmodule Flyster.Context.Goals do
   end
 
   @doc ~S"""
-  Gets all the goals in the database
+  Gets all the goals in the database marked as `private: false`
 
   ## Examples
 
-      iex> all_goals()
+      iex> all_public_goals()
       [%Goal{id: x, description: y}, %Goal{id: z, description: r}, ...]
 
   """
@@ -73,6 +73,23 @@ defmodule Flyster.Context.Goals do
   def all_public_goals do
     query = from goal in Goal,
               where: goal.private == false
+
+    query |> Repo.all() |> Repo.preload(:creator) |> Repo.preload(:comments)
+  end
+
+  @doc ~S"""
+  Gets all the goals in the database marked as `private: true`
+
+  ## Examples
+
+      iex> all_private_goals()
+      [%Goal{id: x, description: y}, %Goal{id: z, description: r}, ...]
+
+  """
+
+  def all_private_goals do
+    query = from goal in Goal,
+              where: goal.private == true
 
     query |> Repo.all() |> Repo.preload(:creator) |> Repo.preload(:comments)
   end

@@ -3,6 +3,7 @@ defmodule Flyster.GoalsTest do
 
   alias Flyster.Context.Goals
   import Flyster.AccountsFixtures
+  import Flyster.GoalsFixtures
 
   describe "save_goal/1" do
     test "saves a goal given valid params" do
@@ -24,6 +25,14 @@ defmodule Flyster.GoalsTest do
 
       assert {:ok, _goal} = Goals.update_goal(goal, %{accomplished: true})
     end
+  end
 
+  describe "add_goal_comment/1" do
+    test "comments can be added on goals" do
+      user = user_fixture()
+      goal = goal_fixture()
+
+      assert {:ok, _goal_comment} = Goals.add_goal_comment(%{goal_id: goal.id, creator_id: user.id, comment: "This works!"})
+    end
   end
 end
