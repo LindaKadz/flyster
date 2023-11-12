@@ -1,7 +1,8 @@
 # Cheza
 
 ## Intro
-Welcome to Cheza! We are so glad you are here.
+Welcome to Cheza! We are so glad you are here. Here's a [`feature list`](https://docs.google.com/document/d/1d0S6Ejah8qSdXYudrvf-atpdK1azIiR7vYz8XWDk_1Y/edit?usp=sharing) to
+help guide you on the features that need to be built.
 
 ## Stack used
   * Elixir - 1.14
