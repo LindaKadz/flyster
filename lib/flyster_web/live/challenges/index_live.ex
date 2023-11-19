@@ -2,7 +2,6 @@ defmodule FlysterWeb.ChallengesIndexLive do
   use FlysterWeb, :live_view
 
   alias Flyster.Context.Challenges
-  alias Flyster.Challenges.Challenge
 
   def render(assigns) do
     ~H"""
