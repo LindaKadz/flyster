@@ -18,8 +18,8 @@ defmodule Flyster.Goals.Goal do
     timestamps()
   end
 
-  def changeset(event_type, attrs) do
-    event_type
+  def changeset(goal_type, attrs) do
+    goal_type
     |> cast(attrs, [:description, :accomplished, :accomplish_by, :creator_id, :category, :private])
     |> validate_required([:description, :accomplish_by, :creator_id, :category, :private])
     |> validate_length(:description, min: 5, max: 60)

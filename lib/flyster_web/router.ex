@@ -78,6 +78,10 @@ defmodule FlysterWeb.Router do
       #goals
       live "/goals/index", GoalsIndexLive, :index
       live "/goals/new", GoalsNewLive, :new
+
+      #challenges
+      live "/challenges/index", ChallengesIndexLive, :index
+      live "/challenges/new", ChallengesNewLive, :new
     end
   end
 
