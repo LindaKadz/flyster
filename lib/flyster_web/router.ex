@@ -70,17 +70,17 @@ defmodule FlysterWeb.Router do
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
       #events
-      live "/events/index", EventsIndexLive, :index
+      live "/events", EventsIndexLive, :index
       live "/events/new", EventsNewLive, :new
       live "/events/:id", EventsShowLive, :show
       live "/events/:id/edit", EventsEditLive, :edit
 
       #goals
-      live "/goals/index", GoalsIndexLive, :index
+      live "/goals", GoalsIndexLive, :index
       live "/goals/new", GoalsNewLive, :new
 
       #challenges
-      live "/challenges/index", ChallengesIndexLive, :index
+      live "/challenges", ChallengesIndexLive, :index
       live "/challenges/new", ChallengesNewLive, :new
     end
   end
