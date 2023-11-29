@@ -16,25 +16,4 @@
 
     <%= @inner_content %>
   </body>
-
-  <script>
-
-    (function() {
-      var nav = document.getElementById("mobile-menu");
-      var profile = document.getElementById("user-menu-button");
-
-      nav.style.display = "none";
-      profile.style.display = "none";
-    })();
-
-    function showMenu() {
-      var menuButton = document.getElementById("user-menu-button");
-
-      if (menuButton.style.display === "none") {
-        menuButton.style.display = "block";
-      } else {
-        menuButton.style.display = "none";
-      }
-    }
-  </script>
 </html>
