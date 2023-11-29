@@ -4,51 +4,6 @@ defmodule FlysterWeb.GoalsIndexLive do
   alias Flyster.Context.Goals
   alias Flyster.Goals.GoalComment
 
-  def render(assigns) do
-    ~H"""
-      All Goals
-
-      <div class="space-y-12 divide-y">
-      <%= for goal <- @goals do %>
-       <div class="grid gap-6">
-        <%= goal.creator.username %>
-        <%= goal.category %>
-        <%= goal.description %>
-       </div>
-       <div>
-       <%= for goal_comment <- goal.comments do %>
-         <%= goal_comment.comment %>
-       <% end %>
-       </div>
-       <.simple_form for={@form} id="goal_comments_form" phx-submit="add_comments">
-         <div class="grid gap-6">
-           <div>
-             <.input field={@form[:creator_id]} type="hidden" value={@current_user.id} required />
-             <.input field={@form[:goal_id]} type="hidden" value={goal.id} required />
-             <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-               <p>
-                 <label for="comment" class="bg-white text-gray-600 px-1">Add Comment *</label>
-               </p>
-             </div>
-             <p>
-               <.input field={@form[:comment]} type="text" required />
-             </p>
-           </div>
-         </div>
-         <:actions>
-           <div class="pt-3">
-             <.button phx-disable-with="I hope you were kind..."
-             class="w-full rounded text-gray-100 bg-blue-500 hover:shadow-inner hover:bg-blue-700 transition-all duration-300">
-               Add Comment
-             </.button>
-           </div>
-         </:actions>
-       </.simple_form>
-      <% end %>
-      </div>
-    """
-  end
-
   def mount(_params, _session, socket) do
     changeset = Goals.goal_comment_changeset(%GoalComment{})
     current_user = socket.assigns.current_user
