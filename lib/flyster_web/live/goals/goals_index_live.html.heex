@@ -1,40 +1,96 @@
-All Goals
-
-<div class="space-y-12 divide-y">
 <%= for goal <- @goals do %>
- <div class="grid gap-6">
-  <%= goal.creator.username %>
-  <%= goal.category %>
-  <%= goal.description %>
- </div>
- <div>
- <%= for goal_comment <- goal.comments do %>
-   <%= goal_comment.comment %>
- <% end %>
- </div>
- <.simple_form for={@form} id="goal_comments_form" phx-submit="add_comments">
-   <div class="grid gap-6">
-     <div>
-       <.input field={@form[:creator_id]} type="hidden" value={@current_user.id} required />
-       <.input field={@form[:goal_id]} type="hidden" value={goal.id} required />
-       <div class="-mt-4 absolute tracking-wider px-1 uppercase text-xs">
-         <p>
-           <label for="comment" class="bg-white text-gray-600 px-1">Add Comment *</label>
-         </p>
-       </div>
-       <p>
-         <.input field={@form[:comment]} type="text" required />
-       </p>
-     </div>
-   </div>
-   <:actions>
-     <div class="pt-3">
-       <.button phx-disable-with="I hope you were kind..."
-       class="w-full rounded text-gray-100 bg-blue-500 hover:shadow-inner hover:bg-blue-700 transition-all duration-300">
-         Add Comment
-       </.button>
-     </div>
-   </:actions>
- </.simple_form>
-<% end %>
+<!-- component -->
+<div class="bg-cream p-10 flex items-center justify-center">
+  <div class="w-full bg-white border-gray-200 dark:border-gray-800 p-4 rounded-xl border max-w-xl">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <!-- <img class="h-11 w-11 rounded-full" src="https://pbs.twimg.com/profile_images/1287562748562309122/4RLk5A_U_x96.jpg"/> -->
+        <div class="ml-1.5 text-sm leading-tight">
+          <span class="text-black font-bold block "><%= goal.creator.first_name %> <%= goal.creator.last_name %></span>
+          <span class="text-black font-normal block">@<%= goal.creator.username %></span>
+        </div>
+      </div>
+      <span class="inline-flex items-center rounded-full bg-coconut px-2 py-1 text-xs font-medium text-creambrown ring-1 ring-inset ring-coconut">
+        <%= goal.category %>
+      </span>
+    </div>
+
+    <p class="text-black block text-xl leading-snug mt-3">
+      <%= goal.description %>
+    </p>
+    <p class="text-gray-500 dark:text-gray-400 text-base py-1 my-0.5">
+     <%= NaiveDateTime.to_string(goal.inserted_at) %>
+    </p>
+    <div class="border-gray-200 dark:border-gray-600 border border-b-0 my-1"></div>
+
+    <div class="text-gray-500 dark:text-gray-400 flex mt-3">
+      <div class="flex items-center mr-6" onclick="showComments()">
+        <svg class="fill-current h-5 w-auto" viewBox="0 0 24 24" class="r-1re7ezh r-4qtqp9 r-yyyyoo r-1xvli5t r-dnmrzs r-bnwqim r-1plcrui r-lrvibr"><g><path d="M14.046 2.242l-4.148-.01h-.002c-4.374 0-7.8 3.427-7.8 7.802 0 4.098 3.186 7.206 7.465 7.37v3.828c0 .108.044.286.12.403.142.225.384.347.632.347.138 0 .277-.038.402-.118.264-.168 6.473-4.14 8.088-5.506 1.902-1.61 3.04-3.97 3.043-6.312v-.017c-.006-4.367-3.43-7.787-7.8-7.788zm3.787 12.972c-1.134.96-4.862 3.405-6.772 4.643V16.67c0-.414-.335-.75-.75-.75h-.396c-3.66 0-6.318-2.476-6.318-5.886 0-3.534 2.768-6.302 6.3-6.302l4.147.01h.002c3.532 0 6.3 2.766 6.302 6.296-.003 1.91-.942 3.844-2.514 5.176z"></path></g></svg>
+        <span class="ml-3"><%= Enum.count(goal.comments) %> comments</span>
+      </div>
+    </div>
+
+    <div id="goal_comments" class="goal_comments" style="display:none">
+      <ul role="list" class="space-y-6">
+        <li class="relative flex gap-x-4">
+          <div class="absolute left-0 top-0 flex w-6 justify-center -bottom-6">
+            <div class="w-px bg-gray-200"></div>
+          </div>
+          <div class="relative flex h-6 w-6 flex-none items-center justify-center bg-white">
+            <div class="h-1.5 w-1.5 rounded-full bg-gray-100 ring-1 ring-gray-300"></div>
+          </div>
+        </li>
+        <%= for goal_comment <- goal.comments do %>
+          <li class="relative flex gap-x-4">
+            <div class="absolute left-0 top-0 flex w-6 justify-center -bottom-6">
+              <div class="w-px bg-gray-200"></div>
+            </div>
+            <img src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-50">
+            <div class="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
+              <div class="flex justify-between gap-x-4">
+                <div class="py-0.5 text-xs leading-5 text-gray-500"><span class="font-medium text-gray-900"><%= goal_comment.creator.username %></span> commented</div>
+                <time datetime="2023-01-23T15:56" class="flex-none py-0.5 text-xs leading-5 text-gray-500">3d ago</time>
+              </div>
+              <p class="text-sm leading-6 text-gray-500"><%= goal_comment.comment %></p>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <!-- New comment form -->
+      <div class="mt-6 flex gap-x-3">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full bg-gray-50">
+        <.simple_form for={@form} id="goal_comments_form" phx-submit="add_comments" class="relative flex-auto">
+          <div class="overflow-hidden rounded-lg pb-12">
+            <label for="comment" class="sr-only">Add your comment</label>
+            <.input field={@form[:creator_id]} type="hidden" value={@current_user.id} required />
+            <.input field={@form[:goal_id]} type="hidden" value={goal.id} required />
+            <.input field={@form[:comment]} type="textarea" rows="2" class="block w-full resize-none border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6" placeholder="Add your comment..." required />
+          </div>
+
+          <:actions>
+            <div class="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
+              <div class="flex items-center space-x-5"></div>
+                <.button phx-disable-with="I hope you were kind..."
+                class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                 Comment
+                </.button>
+            </div>
+         </:actions>
+        </.simple_form>
+      </div>
+    </div>
+  </div>
 </div>
+<% end %>
+
+<script>
+  function showComments() {
+    var comments = document.getElementById("goal_comments");
+
+    if (comments.style.display === "none") {
+      comments.style.display = "block";
+    } else {
+      comments.style.display = "none";
+    }
+  }
+</script>

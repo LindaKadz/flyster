@@ -37,7 +37,7 @@ defmodule FlysterWeb.GoalsIndexLive do
           {:noreply,
             socket
             |> put_flash(:info, "Comment Added!")
-            |> redirect(to: ~p"/goals/index")}
+            |> redirect(to: ~p"/goals")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
