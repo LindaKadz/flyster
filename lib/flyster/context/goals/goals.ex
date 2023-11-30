@@ -74,7 +74,7 @@ defmodule Flyster.Context.Goals do
     query = from goal in Goal,
               where: goal.private == false
 
-    query |> Repo.all() |> Repo.preload(:creator) |> Repo.preload(:comments)
+    query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
   end
 
   @doc ~S"""
@@ -91,7 +91,7 @@ defmodule Flyster.Context.Goals do
     query = from goal in Goal,
               where: goal.private == true
 
-    query |> Repo.all() |> Repo.preload(:creator) |> Repo.preload(:comments)
+    query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
   end
 
   #### GOAL COMMENTS
