@@ -1,6 +1,6 @@
 <div class="divide-gray-900/10">
   <div class="grid md:grid-cols-2">
-    <form class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+    <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
       <.simple_form
         for={@form}
         id="goal_form"
@@ -45,7 +45,6 @@
               </div>
             </div>
             <.input field={@form[:creator_id]} type="hidden" value={@current_user.id} required />
-
           </div>
         </div>
         <:actions>
@@ -57,6 +56,6 @@
           </div>
         </:actions>
       </.simple_form>
-    </form>
+    </div>
   </div>
 </div>

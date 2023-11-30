@@ -11,7 +11,7 @@ defmodule FlysterWeb.GoalsIndexLive do
 
     socket =
       socket
-      |> assign(trigger_submit: false, check_errors: false, current_user: current_user, goals: goals)
+      |> assign(trigger_submit: false, check_errors: false, current_user: current_user, goals: goals, page_title: "Goals")
       |> assign_form(changeset)
 
     {:ok, socket}
