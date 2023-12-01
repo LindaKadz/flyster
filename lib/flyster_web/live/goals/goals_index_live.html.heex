@@ -83,18 +83,6 @@
                </:actions>
               </.simple_form>
             </div>
-
-            <script>
-              function showComments(goalId) {
-                var comments = document.getElementById("goal-" + goalId);
-
-                if (comments.style.display === "none") {
-                  comments.style.display = "block";
-                } else {
-                  comments.style.display = "none";
-                }
-              }
-            </script>
           </div>
         </div>
       </div>
@@ -102,3 +90,15 @@
     </div>
   </div>
 </div>
+
+<script>
+  function showComments(goalId) {
+    var comments = document.getElementById("goal-" + goalId);
+
+    if (comments.style.display === "none") {
+      comments.style.display = "block";
+    } else {
+      comments.style.display = "none";
+    }
+  }
+</script>
