@@ -127,6 +127,22 @@ defmodule Flyster.Context.Goals do
     GoalComment.changeset(goal_comment, attrs)
   end
 
+  @doc """
+  Returns a list of goals for one user.
+
+  ## Examples
+
+      iex> all_my_goals(user_id)
+      [%Goal{id: x, description: y}, %Goal{id: z, description: r}, ...]
+
+  """
+  def all_my_goals(user_id) do
+    query = from goal in Goal,
+              where: goal.creator_id == ^user_id
+
+    query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
+  end
+
   ## Goal Functions
 
   @doc """
