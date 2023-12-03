@@ -145,31 +145,12 @@ defmodule Flyster.Context.Goals do
 
   ## Goal Functions
 
-  @doc """
-  Converts Date from a string to an list
-
-  ## Examples
-
-      iex> convert_to_date("2023-12-31")
-       ~D[2023-12-20]
-
-  """
   defp convert_to_date(date) do
     date
     |> String.split("-")
     |> Enum.map(fn string -> String.to_integer(string) end)
     |> convert_list_to_date()
   end
-
-  @doc """
-  Converts a list to a date
-
-  ## Examples
-
-      iex> convert_to_date([2023, 12, 20])
-      ~D[2023-12-20]
-
-  """
 
   defp convert_list_to_date(date_list) do
     {:ok, date} = Date.new(Enum.at(date_list, 0), Enum.at(date_list, 1), Enum.at(date_list, 2))
