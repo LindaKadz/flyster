@@ -1,3 +1,15 @@
+<div class="lg:flex lg:items-center lg:justify-between">
+  <div class="min-w-0 flex-1">
+    <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Create A New Goal</h2>
+    <div class="mt-1 flex flex-col sm:mt-0 sm:flex-row sm:flex-wrap sm:space-x-6">
+      <div class="mt-2 flex items-center text-sm text-gray-500">
+        Working on something new? Let's document it for you!
+      </div>
+
+    </div>
+  </div>
+</div>
+<br>
 <div class="divide-gray-900/10">
   <div class="grid md:grid-cols-2">
     <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
@@ -27,13 +39,13 @@
               <div class="mt-2">
                 <.input field={@form[:description]} type="textarea" rows="3" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6" required />
               </div>
-
+              <p class="mt-3 text-sm leading-6 text-gray-600">60 characters max, so keep it simple!</p>
             </div>
 
             <div class="sm:col-span-3">
               <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900">Accomplish by</label>
               <div class="mt-2">
-                <.input field={@form[:accomplish_by]} type="text" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6" required />
+                <.input field={@form[:accomplish_by]} type="date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6" required />
               </div>
               <p class="mt-3 text-sm leading-6 text-gray-600">Remember to give yourself enough time!</p>
             </div>

@@ -21,7 +21,20 @@ defmodule Flyster.Goals.Goal do
   def changeset(goal_type, attrs) do
     goal_type
     |> cast(attrs, [:description, :accomplished, :accomplish_by, :creator_id, :category, :private])
+    |> validate_accomplish_by()
     |> validate_required([:description, :accomplish_by, :creator_id, :category, :private])
     |> validate_length(:description, min: 5, max: 60)
   end
+
+  defp validate_accomplish_by(changeset) do
+    changeset
+    |> validate_change(:accomplish_by, fn :accomplish_by, accomplish_by ->
+      if Flyster.Context.Goals.check_date_validity(accomplish_by) != :gt do
+        [accomplish_by: "Date has to be greater than today"]
+      else
+        []
+      end
+    end)
+  end
+
 end
