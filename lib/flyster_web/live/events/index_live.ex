@@ -28,6 +28,6 @@ defmodule FlysterWeb.EventsIndexLive do
     events = Events.all_events()
     current_user = socket.assigns.current_user
 
-    {:ok, assign(socket, events: events, current_user: current_user, attend_event_form: to_form(%{}, as: "attend_event"))}
+    {:ok, assign(socket, events: events, current_user: current_user)}
   end
 end
