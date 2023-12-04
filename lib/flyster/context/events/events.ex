@@ -73,7 +73,7 @@ defmodule Flyster.Context.Events do
   """
 
   def all_events do
-    Repo.all(Event) |> Repo.preload(:host) |> Repo.preload(:attendees)
+    Repo.all(Event) |> Repo.preload([:host, :attendees, :event_type])
   end
 
   @doc ~S"""
@@ -87,7 +87,7 @@ defmodule Flyster.Context.Events do
   """
 
   def find_event(id) do
-    Repo.get(Event, id) |> Repo.preload(:user)
+    Repo.get(Event, id) |> Repo.preload(:host)
   end
 
   @doc """
@@ -210,7 +210,7 @@ defmodule Flyster.Context.Events do
     query = from event in Event,
               where: event.host_id == ^user_id
 
-    query |> Repo.all()
+    query |> Repo.all() |> Repo.preload([:attendees, :event_type])
   end
 
 end
