@@ -1,4 +1,4 @@
-defmodule FlysterWeb.EventsEditLive do
+defmodule FlysterWeb.MyEventsEditLive do
   use FlysterWeb, :live_view
 
   alias Flyster.Context.Events

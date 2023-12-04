@@ -210,7 +210,7 @@ defmodule Flyster.Context.Events do
     query = from event in Event,
               where: event.host_id == ^user_id
 
-    query |> Repo.all()
+    query |> Repo.all() |> Repo.preload([:attendees, :event_type])
   end
 
 end
