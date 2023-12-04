@@ -38,5 +38,17 @@ defmodule Flyster.Events.Event do
     |> validate_required([:name, :time, :date, :description, :location, :event_type_id, :host_id])
     |> validate_length(:name, min: 5, max: 22)
     |> validate_length(:description, min: 10)
+    |> validate_date()
+  end
+
+  defp validate_date(changeset) do
+    changeset
+    |> validate_change(:date, fn :date, date ->
+      if Flyster.Context.Goals.check_date_validity(date) != :gt do
+        [date: "Date has to be greater than today"]
+      else
+        []
+      end
+    end)
   end
 end
