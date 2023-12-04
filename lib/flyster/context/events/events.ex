@@ -196,4 +196,21 @@ defmodule Flyster.Context.Events do
     |> Repo.update()
   end
 
+  @doc ~S"""
+  Gets all the events in the database for a specific user
+
+  ## Examples
+
+      iex> all_my_events()
+      [%Event{id: 1, description: y}, %Event{id: z, description: 2}, ...]
+
+  """
+
+  def all_my_events(user_id) do
+    query = from event in Event,
+              where: event.host_id == ^user_id
+
+    query |> Repo.all()
+  end
+
 end

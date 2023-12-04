@@ -5,6 +5,7 @@ defmodule Flyster.Context.Challenges do
 
   alias Flyster.Challenges.Challenge
   alias Flyster.Repo
+  import Ecto.Query, warn: false
 
   @doc """
   Creates a challenge.
@@ -49,5 +50,22 @@ defmodule Flyster.Context.Challenges do
 
   def all_challenges do
     Repo.all(Challenge) |> Repo.preload(:creator)
+  end
+
+  @doc ~S"""
+  Gets all the challenges in the database for a specific
+
+  ## Examples
+
+      iex> all_challenges()
+      [%Challenge{id: 1, description: y}, %Challenge{id: z, description: 2}, ...]
+
+  """
+
+  def all_my_challenges(user_id) do
+    query = from challenge in Challenge,
+              where: challenge.creator_id == ^user_id
+
+    query |> Repo.all()
   end
 end
