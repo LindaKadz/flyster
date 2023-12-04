@@ -10,12 +10,12 @@ defmodule FlysterWeb.EventsShowLive do
      <p> <%= @event.description %> </p>
      <p> <%= @event.rules %> </p>
      <p> <%= @event.location %> </p>
-     <p> <%= @event.user.username %> </p>
+     <p> <%= @event.host.username %> </p>
 
     </div>
     <br/>
     <div>
-     <%= if @current_user && @event.user != @current_user do %>
+     <%= if @current_user && @event.host != @current_user do %>
        <.simple_form for={@attend_event_form} id="attend_event_form" phx-submit="update_event_attendees">
          <.input field={@attend_event_form[:user_id]} type="hidden" value={@current_user.id} required />
          <.input field={@attend_event_form[:event_id]} type="hidden" value={@event.id} required />
