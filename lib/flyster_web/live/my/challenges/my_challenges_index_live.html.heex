@@ -1,0 +1,70 @@
+<%= if !Enum.empty?(@challenges) do %>
+<div class="pb-5 sm:flex sm:items-center sm:justify-between">
+  <h3 class="text-base font-semibold leading-6 text-gray-900"></h3>
+  <div class="mt-3 sm:ml-4 sm:mt-0">
+    <a href="/challenges/new">
+      <button type="button" class="inline-flex items-center rounded-md bg-official px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
+        Create new Goal
+      </button>
+    </a>
+  </div>
+</div>
+<br>
+<% end %>
+<%= if Enum.empty?(@challenges) do %>
+  <div class="text-center">
+    <br>
+    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+    </svg>
+    <h3 class="mt-2 text-sm font-semibold text-gray-900">You have not created any challenges.</h3>
+    <p class="mt-1 text-sm text-gray-500">Thinking of something that people may enjoy? Create the challenge for them!</p>
+    <div class="mt-6">
+      <a href="/challenges/new">
+        <button type="button" class="inline-flex items-center rounded-md bg-official px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
+          <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+          </svg>
+          New Challenge
+        </button>
+      </a>
+    </div>
+    <br>
+  </div>
+<% else %>
+<div class="divide-gray-900/10">
+  <div class="grid md:grid-cols-2">
+    <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+      <%= for challenge <- @challenges do %>
+      <!-- component -->
+      <div class="bg-cream p-10 flex items-center">
+        <div class="w-full bg-white border-gray-200 dark:border-gray-800 p-4 rounded-xl border max-w-xl">
+          <div class="flex justify-between">
+            <div class="flex items-center">
+              <!-- <img class="h-11 w-11 rounded-full" src="https://pbs.twimg.com/profile_images/1287562748562309122/4RLk5A_U_x96.jpg"/> -->
+              <div class="ml-1.5 text-sm leading-tight">
+                <span class="text-black font-bold block "><%= challenge.creator.first_name %> <%= challenge.creator.last_name %></span>
+                <span class="text-black font-normal block">@<%= challenge.creator.username %></span>
+              </div>
+            </div>
+            <span class="inline-flex items-center rounded-full bg-official px-2 py-1 text-xs font-medium text-white ring-1 ring-inset ring-official">
+              <%= challenge.category %>
+            </span>
+          </div>
+          <p class="text-black block text-xl leading-snug mt-3">
+            <%= challenge.description %>
+            <br>
+            <br>
+            Level: <%= challenge.level %>
+          </p>
+          <p class="text-gray-500 dark:text-gray-400 text-base py-1 my-0.5">
+           <%= NaiveDateTime.to_string(challenge.inserted_at) %>
+          </p>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% end %>
