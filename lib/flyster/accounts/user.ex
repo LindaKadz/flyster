@@ -11,6 +11,10 @@ defmodule Flyster.Accounts.User do
     field :last_name, :string
     field :username, :string
     field :city, :string
+    field :state, :string
+    field :postal_code, :string
+    field :level, :string
+    field :full_address, :string
     field :country, :string
     field :phone_number, :string
     field :email, :string
@@ -129,6 +133,34 @@ defmodule Flyster.Accounts.User do
       %{} = changeset -> add_error(changeset, :email, "did not change")
     end
   end
+
+  @doc """
+  A user changeset for changing the email.
+
+  It requires the email to change otherwise an error is added.
+  """
+
+  def personal_info_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:city, :state, :country, :phone_number, :full_address, :postal_code])
+    |> validate_required([:city, :country])
+  end
+
+  @doc """
+  A user changeset for changing the email.
+
+  It requires the email to change otherwise an error is added.
+  """
+
+  def public_info_changeset(user, attrs, opts \\ []) do
+    user
+    |> cast(attrs, [:first_name, :last_name, :username, :level, :role_id])
+    |> validate_required([:first_name, :last_name, :username, :level, :role_id])
+    |> validate_length(:first_name, min: 2, max: 22)
+    |> validate_length(:last_name, min: 2, max: 22)
+    |> validate_length(:username, min: 2, max: 22)
+  end
+
 
   @doc """
   A user changeset for changing the password.

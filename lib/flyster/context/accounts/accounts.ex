@@ -189,6 +189,68 @@ defmodule Flyster.Context.Accounts do
   end
 
   @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user public information.
+
+  ## Examples
+
+      iex> change_public_info(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_public_info(user, attrs \\ %{}) do
+    User.public_info_changeset(user, attrs, hash_password: false)
+  end
+
+  @doc """
+  It updates the data saved in the database with new information
+
+  ## Examples
+
+      iex> apply_public_info_changes(user, %{level: ...})
+      {:ok, %User{}}
+
+      iex> apply_public_info_changes(user, %{level: ...})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def apply_public_info_changes(user, attrs) do
+    user
+    |> change_public_info(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for changing the user private information.
+
+  ## Examples
+
+      iex> change_private_info(user)
+      %Ecto.Changeset{data: %User{}}
+
+  """
+  def change_private_info(user, attrs \\ %{}) do
+    User.personal_info_changeset(user, attrs, hash_password: false)
+  end
+
+  @doc """
+  It updates the data saved in the database with new information
+
+  ## Examples
+
+      iex> apply_private_info_changes(user, %{postal_code: ...})
+      {:ok, %User{}}
+
+      iex> apply_private_info_changes(event, %{postal_code: ...})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def apply_private_info_changes(user, attrs) do
+    user
+    |> change_private_info(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
   Updates the user password.
 
   ## Examples

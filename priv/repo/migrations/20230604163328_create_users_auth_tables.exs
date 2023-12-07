@@ -5,12 +5,16 @@ defmodule Flyster.Repo.Migrations.CreateUsersAuthTables do
     execute "CREATE EXTENSION IF NOT EXISTS citext", ""
 
     create table(:users) do
-      add :first_name, :string, null: false
-      add :last_name, :string, null: false
+      add :first_name, :string
+      add :last_name, :string
       add :username, :string, null: false
-      add :city, :string, null: false
-      add :country, :string, null: false
-      add :phone_number, :string, null: false
+      add :city, :string
+      add :state, :string
+      add :postal_code, :string
+      add :level, :string
+      add :full_address, :string
+      add :country, :string
+      add :phone_number, :string
       add :email, :citext, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime
