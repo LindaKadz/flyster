@@ -142,35 +142,4 @@ defmodule Flyster.Context.Goals do
 
     query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
   end
-
-  ## Goal Functions
-
-  defp convert_to_date(date) do
-    date
-    |> String.split("-")
-    |> Enum.map(fn string -> String.to_integer(string) end)
-    |> convert_list_to_date()
-  end
-
-  defp convert_list_to_date(date_list) do
-    {:ok, date} = Date.new(Enum.at(date_list, 0), Enum.at(date_list, 1), Enum.at(date_list, 2))
-
-    date
-  end
-
-  @doc """
-  Checks if date is greater than today's date
-
-  ## Examples
-
-      iex> convert_to_date("2023-12-31")
-      :gt
-
-  """
-
-  def check_date_validity(accomplish_by_date) do
-    date = convert_to_date(accomplish_by_date)
-
-    Date.compare(date, Date.utc_today())
-  end
 end
