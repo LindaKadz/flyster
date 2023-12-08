@@ -51,4 +51,10 @@ defmodule FlysterWeb.UserRegistrationLive do
       assign(socket, form: form)
     end
   end
+
+  defp format_error(error) do
+    [field | message ] = Tuple.to_list(error)
+    [error_message | _validation ] = message |> List.first |> Tuple.to_list
+    "#{Atom.to_string(field)} #{error_message}"
+  end
 end

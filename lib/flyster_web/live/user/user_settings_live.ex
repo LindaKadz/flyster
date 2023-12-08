@@ -115,7 +115,7 @@ defmodule FlysterWeb.UserSettingsLive do
     case Accounts.apply_public_info_changes(user, params["user"]) do
       {:ok, updated_user} ->
 
-        info = "Profile successfully updated."
+        info = "Public Information successfully updated."
         {:noreply,
           socket
           |> put_flash(:info, info)
@@ -136,16 +136,17 @@ defmodule FlysterWeb.UserSettingsLive do
     {:noreply, assign(socket, personal_info_form: personal_info_form)}
   end
 
-  def handle_event("update_public_info", params, socket) do
+  def handle_event("update_personal_info", params, socket) do
     user = socket.assigns.current_user
 
-    case Accounts.apply_private_info_changes(user, params) do
+    case Accounts.apply_private_info_changes(user, params["user"]) do
       {:ok, user} ->
-        personal_info_form =
-          user
-          |> to_form()
+        info = "Private Information successfully updated."
 
-        {:noreply, assign(socket, trigger_submit: true, personal_info_form: personal_info_form)}
+        {:noreply,
+          socket
+          |> put_flash(:info, info)
+          |> redirect(to: ~p"/users/settings")}
 
       {:error, changeset} ->
         {:noreply, assign(socket, personal_info_form: to_form(changeset))}
