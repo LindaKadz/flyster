@@ -101,7 +101,7 @@ defmodule FlysterWeb.ChallengesNewLive do
           {:noreply,
             socket
             |> put_flash(:info, "Challenge created!")
-            |> redirect(to: ~p"/challenges/index")}
+            |> redirect(to: ~p"/challenges")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}

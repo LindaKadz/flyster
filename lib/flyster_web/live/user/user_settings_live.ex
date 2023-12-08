@@ -20,6 +20,8 @@ defmodule FlysterWeb.UserSettingsLive do
     user = socket.assigns.current_user
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
+    public_info_changeset = Accounts.change_public_info(user)
+    personal_info_changeset = Accounts.change_private_info(user)
 
     socket =
       socket
@@ -28,6 +30,8 @@ defmodule FlysterWeb.UserSettingsLive do
       |> assign(:current_email, user.email)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
+      |> assign(:public_info_form, to_form(public_info_changeset))
+      |> assign(:personal_info_form, to_form(personal_info_changeset))
       |> assign(:trigger_submit, false)
 
     {:ok, socket}
@@ -98,7 +102,7 @@ defmodule FlysterWeb.UserSettingsLive do
   def handle_event("validate_public_info", params, socket) do
     public_info_form =
       socket.assigns.current_user
-      |> Accounts.change_public_info(params)
+      |> Accounts.change_public_info(params["user"])
       |> Map.put(:action, :validate)
       |> to_form()
 
@@ -108,13 +112,14 @@ defmodule FlysterWeb.UserSettingsLive do
   def handle_event("update_public_info", params, socket) do
     user = socket.assigns.current_user
 
-    case Accounts.apply_public_info_changes(user, params) do
-      {:ok, user} ->
-        public_info_form =
-          user
-          |> to_form()
+    case Accounts.apply_public_info_changes(user, params["user"]) do
+      {:ok, updated_user} ->
 
-        {:noreply, assign(socket, trigger_submit: true, public_info_form: public_info_form)}
+        info = "Profile successfully updated."
+        {:noreply,
+          socket
+          |> put_flash(:info, info)
+          |> redirect(to: ~p"/users/settings")}
 
       {:error, changeset} ->
         {:noreply, assign(socket, public_info_form: to_form(changeset))}
@@ -124,7 +129,7 @@ defmodule FlysterWeb.UserSettingsLive do
   def handle_event("validate_personal_info", params, socket) do
     personal_info_form =
       socket.assigns.current_user
-      |> Accounts.change_private_info(params)
+      |> Accounts.change_private_info(params["user"])
       |> Map.put(:action, :validate)
       |> to_form()
 
@@ -145,5 +150,21 @@ defmodule FlysterWeb.UserSettingsLive do
       {:error, changeset} ->
         {:noreply, assign(socket, personal_info_form: to_form(changeset))}
     end
+  end
+
+  defp all_roles do
+    roles = Accounts.all_roles()
+    Enum.map(roles, &{&1.name, &1.id})
+  end
+
+  defp challenge_level_types do
+    challenge_level_types = [
+      %{name: "Beginner", value: "Beginner"},
+      %{name: "Beginner-Intermediate", value: "Beginner-Intermediate"},
+      %{name: "Intermediate", value: "Intermediate"},
+      %{name: "Intermediate-Advanced", value: "Intermediate-Advanced"},
+      %{name: "Advanced", value: "Advanced"}
+    ]
+    Enum.map(challenge_level_types, &{&1.name, &1.value})
   end
 end

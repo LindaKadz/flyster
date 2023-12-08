@@ -58,7 +58,7 @@ defmodule Flyster.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :role_id, :terms_of_service])
+    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :role_id, :terms_of_service, :level])
     |> validate_email(opts)
     |> validate_password(opts)
     |> validate_user_details
@@ -141,7 +141,7 @@ defmodule Flyster.Accounts.User do
   It requires the email to change otherwise an error is added.
   """
 
-  def personal_info_changeset(user, attrs, opts \\ []) do
+  def personal_info_changeset(user, attrs, _opts \\ []) do
     user
     |> cast(attrs, [:city, :state, :country, :phone_number, :full_address, :postal_code])
     |> validate_required([:city, :country])
@@ -153,7 +153,7 @@ defmodule Flyster.Accounts.User do
   It requires the email to change otherwise an error is added.
   """
 
-  def public_info_changeset(user, attrs, opts \\ []) do
+  def public_info_changeset(user, attrs, _opts \\ []) do
     user
     |> cast(attrs, [:first_name, :last_name, :username, :level, :role_id])
     |> validate_required([:first_name, :last_name, :username, :level, :role_id])

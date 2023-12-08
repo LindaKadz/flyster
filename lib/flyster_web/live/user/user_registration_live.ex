@@ -32,7 +32,7 @@ defmodule FlysterWeb.UserRegistrationLive do
     end
   end
 
-  def all_roles do
+  defp all_roles do
     roles = Accounts.all_roles()
     Enum.map(roles, &{&1.name, &1.id})
   end
