@@ -1,0 +1,123 @@
+<div class="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
+  <div class="sm:mx-auto sm:w-full sm:max-w-md">
+    <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register for an Account</h2>
+    <p class="mt-10 text-center text-md text-gray-500">
+      Have an account already?
+      <a href="/users/log_in" class="font-semibold leading-6 text-official hover:text-official">Login</a>
+    </p>
+  </div>
+  <br>
+
+  <div class="divide-gray-900/10">
+    <div class="grid md:grid-cols-2">
+      <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+        <.simple_form
+          for={@form}
+          id="registration_form"
+          phx-submit="save"
+          phx-change="validate"
+          phx-trigger-action={@trigger_submit}
+          action={~p"/users/log_in?_action=registered"}
+          method="post"
+        >
+          <.error :if={@check_errors}>
+            Oops, something went wrong!
+            <%= for form_error <- @form.errors do %>
+              <%= format_error(form_error) %>
+            <% end %>
+          </.error>
+          <div class="px-4 py-6 sm:p-8">
+            <div class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+
+              <div class="sm:col-span-3">
+                <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
+                <div class="mt-2">
+                  <.input
+                  field={@form[:first_name]}
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+                  required />
+                </div>
+              </div>
+
+              <div class="sm:col-span-3">
+                <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
+                <div class="mt-2">
+                  <.input
+                  field={@form[:last_name]}
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+                  required />
+                </div>
+              </div>
+
+              <div class="sm:col-span-3">
+                <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+                <div class="mt-2">
+                  <.input
+                  field={@form[:username]}
+                  type="text"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+                  required />
+                </div>
+              </div>
+
+              <div class="sm:col-span-3">
+                <label for="category" class="block text-sm font-medium leading-6 text-gray-900">Which Category fits you best?</label>
+                <div class="mt-2">
+                  <.input
+                  field={@form[:role_id]}
+                  options={all_roles()}
+                  type="select"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+                  required />
+                </div>
+              </div>
+
+              <div class="sm:col-span-4">
+                <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+                <div class="mt-2">
+                  <.input
+                  field={@form[:email]}
+                  type="email"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+                  required />
+                </div>
+              </div>
+
+              <div class="sm:col-span-4">
+                <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+                <div class="mt-2">
+                  <.input
+                  field={@form[:password]}
+                  type="password"
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+                  required />
+                </div>
+              </div>
+
+              <div class="sm:col-span-4">
+                <.input
+                field={@form[:terms_of_service]}
+                type="checkbox"
+                class="h-4 w-4 rounded border-gray-300 text-official focus:ring-official"
+                label="I agree to the terms of service"
+                required />
+
+                <a href="/about"><label class="mt-3 text-sm leading-6 text-gray-600"> Terms and conditions</label></a>
+              </div>
+            </div>
+          </div>
+          <:actions>
+            <div class="flex items-center justify-end gap-x-6 border-t border-gray-900/10 px-4 py-4 sm:px-8">
+              <.button phx-disable-with="Creating account..."
+              class="flex w-full justify-center rounded-md bg-official px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
+                Create Account
+              </.button>
+            </div>
+          </:actions>
+        </.simple_form>
+      </div>
+    </div>
+  </div>
+</div>
