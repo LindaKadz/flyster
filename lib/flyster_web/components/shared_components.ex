@@ -2,7 +2,7 @@ defmodule FlysterWeb.SharedComponents do
   @moduledoc false
   alias Flyster.Cldr
 
-  ## Date Functions Country functions
+  ## Country Functions Country functions
 
   def country_options() do
     Cldr.Territory.country_codes()
@@ -14,6 +14,11 @@ defmodule FlysterWeb.SharedComponents do
     [key: Cldr.Territory.from_territory_code!(country),
      value: country,
      data_label: Cldr.Territory.to_unicode_flag!(country)]
+  end
+
+  def full_country_name(country_code) do
+    {:ok, country_name} = Cldr.Territory.from_territory_code(country_code)
+    country_name
   end
 
   ## Date Functions

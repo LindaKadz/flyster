@@ -9,7 +9,7 @@ defmodule FlysterWeb.EventsShowLive do
      <h1> <%= @event.name %> </h1>
      <p> <%= @event.description %> </p>
      <p> <%= @event.rules %> </p>
-     <p> <%= @event.location %> </p>
+     <p> <%= @event.city %> </p>
      <p> <%= @event.host.username %> </p>
 
     </div>

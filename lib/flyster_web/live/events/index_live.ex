@@ -9,4 +9,8 @@ defmodule FlysterWeb.EventsIndexLive do
 
     {:ok, assign(socket, events: events, current_user: current_user)}
   end
+
+  defp full_country_name(country_code) do
+    FlysterWeb.SharedComponents.full_country_name(country_code)
+  end
 end
