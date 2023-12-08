@@ -56,4 +56,8 @@ defmodule FlysterWeb.EventsNewLive do
     ]
     Enum.map(currency_types, &{&1.name, &1.value})
   end
+
+  defp country_options() do
+    FlysterWeb.SharedComponents.country_options()
+  end
 end

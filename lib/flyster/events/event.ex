@@ -14,8 +14,11 @@ defmodule Flyster.Events.Event do
     field :rules, :string
     field :price, :float
     field :customer_paid, :boolean
-    field :location, :string
+    field :address, :string
+    field :city, :string
+    field :country, :string
     field :currency, :string
+    field :duration, :string
 
     belongs_to :event_type, Flyster.Events.EventType
     belongs_to :host, Flyster.Accounts.User, foreign_key: :host_id
@@ -27,7 +30,7 @@ defmodule Flyster.Events.Event do
 
   def changeset(event_type, attrs) do
     event_type
-    |> cast(attrs, [:name, :time, :date, :description, :rules, :price, :customer_paid, :location, :currency, :event_type_id, :host_id])
+    |> cast(attrs, [:name, :time, :date, :description, :duration, :rules, :price, :customer_paid, :address, :currency, :event_type_id, :host_id, :city, :country,])
     |> run_validations()
     |> foreign_key_constraint(:event_type_id)
     |> foreign_key_constraint(:host_id)
@@ -35,7 +38,7 @@ defmodule Flyster.Events.Event do
 
   def run_validations(changeset) do
     changeset
-    |> validate_required([:name, :time, :date, :description, :location, :event_type_id, :host_id])
+    |> validate_required([:name, :time, :date, :description, :duration, :city, :country, :event_type_id, :host_id])
     |> validate_length(:name, min: 5, max: 22)
     |> validate_length(:description, min: 10)
     |> validate_date()
@@ -44,7 +47,7 @@ defmodule Flyster.Events.Event do
   defp validate_date(changeset) do
     changeset
     |> validate_change(:date, fn :date, date ->
-      if Flyster.Context.Goals.check_date_validity(date) != :gt do
+      if FlysterWeb.SharedComponents.check_date_validity(date) != :gt do
         [date: "Date has to be greater than today"]
       else
         []

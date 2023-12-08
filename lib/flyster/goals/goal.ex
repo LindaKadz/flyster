@@ -29,7 +29,7 @@ defmodule Flyster.Goals.Goal do
   defp validate_accomplish_by(changeset) do
     changeset
     |> validate_change(:accomplish_by, fn :accomplish_by, accomplish_by ->
-      if Flyster.Context.Goals.check_date_validity(accomplish_by) != :gt do
+      if FlysterWeb.SharedComponents.check_date_validity(accomplish_by) != :gt do
         [accomplish_by: "Date has to be greater than today"]
       else
         []

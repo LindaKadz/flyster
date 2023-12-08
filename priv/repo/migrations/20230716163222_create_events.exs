@@ -12,8 +12,11 @@ defmodule Flyster.Repo.Migrations.CreateEvents do
       add :rules, :text
       add :price, :float
       add :customer_paid, :boolean, default: false
-      add :location, :string, null: false
+      add :city, :string, null: false
+      add :country, :string, null: false
+      add :address, :string
       add :currency, :string
+      add :duration, :string
 
       timestamps()
     end
