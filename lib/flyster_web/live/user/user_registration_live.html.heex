@@ -1,4 +1,4 @@
-<div class="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
+<div class="flex min-h-full flex-col justify-center sm:px-6 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-md">
     <h2 class="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Register for an Account</h2>
     <p class="mt-10 text-center text-md text-gray-500">
@@ -23,7 +23,7 @@
             Oops, something went wrong! Please check the errors below.
           </.error>
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
+          <label for="first_name" class="block text-sm font-medium leading-6 text-gray-900">First Name</label>
           <div class="mt-2">
             <.input
             field={@form[:first_name]}
@@ -34,7 +34,7 @@
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
+          <label for="last_name" class="block text-sm font-medium leading-6 text-gray-900">Last Name</label>
           <div class="mt-2">
             <.input
             field={@form[:last_name]}
@@ -45,7 +45,7 @@
         </div>
 
         <div>
-          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
+          <label for="username" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
           <div class="mt-2">
             <.input
             field={@form[:username]}
@@ -56,7 +56,7 @@
         </div>
 
         <div>
-          <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          <label for="category" class="block text-sm font-medium leading-6 text-gray-900">Which Category fits you best?</label>
           <div class="mt-2">
             <.input
             field={@form[:role_id]}
@@ -95,7 +95,7 @@
           type="checkbox"
           class="h-4 w-4 rounded border-gray-300 text-official focus:ring-official"
           required />
-            <label for="remember-me" class="ml-3 block text-sm leading-6 text-gray-900">I agree to the terms of service</label>
+            <label for="terms_of_service" class="ml-3 block text-sm leading-6 text-gray-900">I agree to the terms of service</label>
           </div>
 
           <:actions>
@@ -106,7 +106,6 @@
               </.button>
             </div>
           </:actions>
-
         </.simple_form>
       </div>
     </div>
