@@ -14,6 +14,7 @@ defmodule Flyster.Repo.Migrations.CreateUsersAuthTables do
       add :level, :string
       add :full_address, :string
       add :country, :string
+      add :profile_picture, :string
       add :phone_number, :string
       add :terms_of_service, :boolean
       add :email, :citext, null: false
