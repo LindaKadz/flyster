@@ -28,6 +28,8 @@ defmodule FlysterWeb.UserSettingsLive do
       |> assign(:current_password, nil)
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, user.email)
+      |> assign(:uploaded_files, [])
+      |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg), max_entries: 1)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:public_info_form, to_form(public_info_changeset))
@@ -112,7 +114,30 @@ defmodule FlysterWeb.UserSettingsLive do
   def handle_event("update_public_info", params, socket) do
     user = socket.assigns.current_user
 
-    case Accounts.apply_public_info_changes(user, params["user"]) do
+    if Enum.empty?(socket.assigns.uploads.profile_picture.entries) do
+      update_public_info(socket, user, params["user"])
+    else
+      consumed_image = consume_profile_pic(socket)
+      IO.inspect consumed_image
+      user_params = Map.put(params["user"], "profile_picture", consumed_image)
+      IO.inspect user_params
+      update_public_info(socket, user, user_params)
+    end
+  end
+
+  defp consume_profile_pic(socket) do
+    [file_path | _] =
+      consume_uploaded_entries(socket, :profile_picture, fn %{path: path}, _entry ->
+        dest = Path.join([:code.priv_dir(:flyster), "static", "uploads", Path.basename(path)])
+        File.cp!(path, dest)
+        {:ok, ~p"/uploads/#{Path.basename(dest)}"}
+      end)
+
+    file_path
+  end
+
+  defp update_public_info(socket, user, user_params) do
+    case Accounts.apply_public_info_changes(user, user_params) do
       {:ok, updated_user} ->
 
         info = "Public Information successfully updated."

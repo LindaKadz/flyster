@@ -18,7 +18,13 @@
         <div class="w-full bg-white border-gray-200 dark:border-gray-800 p-4 rounded-xl border max-w-xl">
           <div class="flex justify-between">
             <div class="flex items-center">
-              <!-- <img class="h-11 w-11 rounded-full" src="https://pbs.twimg.com/profile_images/1287562748562309122/4RLk5A_U_x96.jpg"/> -->
+              <%= if goal.creator.profile_picture == nil do %>
+                <svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+                </svg>
+              <% else %>
+               <img class="h-11 w-11 rounded-full" src={URI.decode(goal.creator.profile_picture)}/>
+              <% end %>
               <div class="ml-1.5 text-sm leading-tight">
                 <span class="text-black font-bold block "><%= goal.creator.first_name %> <%= goal.creator.last_name %></span>
                 <span class="text-black font-normal block">@<%= goal.creator.username %></span>
@@ -59,7 +65,13 @@
                   <div class="absolute left-0 top-0 flex w-6 justify-center -bottom-6">
                     <div class="w-px bg-gray-200"></div>
                   </div>
-                  <img src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-50">
+                  <%= if goal_comment.creator.profile_picture == nil do %>
+                    <svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+                    </svg>
+                  <% else %>
+                    <img src={URI.decode(goal_comment.creator.profile_picture)} alt="" class="relative mt-3 h-6 w-6 flex-none rounded-full bg-gray-50">
+                  <% end %>
                   <div class="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                     <div class="flex justify-between gap-x-4">
                       <div class="py-0.5 text-xs leading-5 text-gray-500"><span class="font-medium text-gray-900"><%= goal_comment.creator.username %></span> commented</div>
@@ -72,7 +84,13 @@
             </ul>
             <!-- New comment form -->
             <div class="mt-6 flex gap-x-3">
-              <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="h-6 w-6 flex-none rounded-full bg-gray-50">
+              <%= if @current_user.profile_picture == nil do %>
+                <svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+                </svg>
+              <% else %>
+                <img src={URI.decode(@current_user.profile_picture)} alt="" class="h-6 w-6 flex-none rounded-full bg-gray-50">
+              <% end %>
               <.simple_form for={@form} id="goal_comments_form" phx-submit="add_comments" class="relative flex-auto">
                 <div class="overflow-hidden rounded-lg pb-12">
                   <label for="comment" class="sr-only">Add your comment</label>
