@@ -138,7 +138,7 @@ defmodule FlysterWeb.UserSettingsLive do
 
   defp update_public_info(socket, user, user_params) do
     case Accounts.apply_public_info_changes(user, user_params) do
-      {:ok, updated_user} ->
+      {:ok, _updated_user} ->
 
         info = "Public Information successfully updated."
         {:noreply,

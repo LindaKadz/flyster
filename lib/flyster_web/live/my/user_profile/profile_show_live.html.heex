@@ -1,0 +1,117 @@
+<!-- component -->
+<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+
+<main class="profile-page">
+  <section class="relative block h-500-px">
+    <%= if @user.cover_picture == nil do %>
+      <div class="absolute top-0 w-full h-full bg-center bg-cover" style="
+              background-image: url('/images/official_logo.png');
+            ">
+        <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+      </div>
+    <% else %>
+      <div class="absolute top-0 w-full h-full bg-center bg-cover" style='
+              background-image: url("{URI.decode(@current_user.profile_picture)}");
+            '>
+        <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+      </div>
+    <% end %>
+    <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px" style="transform: translateZ(0px)">
+      <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+        <polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
+      </svg>
+    </div>
+  </section>
+  <section class="relative py-16 bg-blueGray-200">
+    <div class="container mx-auto px-4">
+      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+        <div class="px-6">
+          <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+              <div class="relative">
+                <%= if @user.profile_picture == nil do %>
+                  <svg class="rounded-full h-auto align-middle border-none absolute text-gray-300 -m-16 -ml-20 lg:-ml-16 max-w-150-px" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+                  </svg>
+                <% else %>
+                 <img alt="Profile Picture" src={URI.decode(@current_user.profile_picture)} class="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px">
+                <% end %>
+              </div>
+            </div>
+            <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+              <div class="py-6 px-3 mt-32 sm:mt-0">
+                <%= if @current_user.id == @user.id do %>
+                  <a href={~p"/users/settings"}>
+                    <button class="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
+                      Edit Profile
+                    </button>
+                 </a>
+                <% end %>
+              </div>
+            </div>
+            <div class="w-full lg:w-4/12 px-4 lg:order-1">
+              <div class="flex justify-center py-4 lg:pt-4 pt-8">
+                <div class="mr-4 p-3 text-center">
+                  <%= if @current_user.id == @user.id do %>
+                    <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"> <%= get_user_activities(@current_user.id, "challenge", true) %></span><span class="text-sm text-blueGray-400">Challenges</span>
+                  <% else %>
+                    <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= get_user_activities(@user.id, "challenge", false) %></span><span class="text-sm text-blueGray-400">Challenges</span>
+                  <% end %>
+                </div>
+                <div class="mr-4 p-3 text-center">
+                  <%= if @current_user.id == @user.id do %>
+                   <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= get_user_activities(@current_user.id, "event", true) %></span><span class="text-sm text-blueGray-400">Events</span>
+                  <% else %>
+                   <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= get_user_activities(@user.id, "event", false) %></span><span class="text-sm text-blueGray-400">Events</span>
+                  <% end %>
+                </div>
+                <div class="lg:mr-4 p-3 text-center">
+                  <%= if @current_user.id == @user.id do %>
+                   <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= get_user_activities(@current_user.id, "goal", true) %></span><span class="text-sm text-blueGray-400">Goals</span>
+                  <% else %>
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= get_user_activities(@user.id, "goal", false) %></span><span class="text-sm text-blueGray-400">Goals</span>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-12">
+            <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+              <%= @user.first_name %> <%= @user.last_name %>
+            </h3>
+            <div class="text-md leading-normal mt-0 mb-2 text-blueGray-400 font-bold">
+              @<%= @user.username %>
+            </div>
+            <div class="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+              <i class="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
+              <%= if @user.city == nil && @user.city == nil do %>
+                Earth
+              <% else %>
+                <%= @user.city %> <%= @user.country %>
+              <% end %>
+            </div>
+            <div class="mb-2 text-blueGray-600 mt-10">
+              Category: <%= @user.role.name %>
+            </div>
+            <div class="mb-2 text-blueGray-600">
+              Level:
+              <%= if @user.level == nil do %>
+                Beginner
+              <% else %>
+                <%= @user.level %>
+              <% end %>
+            </div>
+          </div>
+          <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
+            <div class="flex flex-wrap justify-center">
+              <div class="w-full lg:w-9/12 px-4">
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
