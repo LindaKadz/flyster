@@ -115,9 +115,11 @@
                 <div class="mt-4 flex text-sm leading-6 text-gray-600">
                   <label for="file-upload" class="relative cursor-pointer rounded-md bg-white font-semibold text-official focus-within:outline-none focus-within:ring-2 focus-within:ring-official focus-within:ring-offset-2 hover:text-official">
                     <span>Upload a file</span>
-                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                    <.live_file_input
+                      upload={@uploads.cover_picture}
+                      class="relative cursor-pointer rounded-md bg-white font-semibold text-official focus-within:outline-none focus-within:ring-2 focus-within:ring-official focus-within:ring-offset-2 hover:text-official"
+                      type="file" />
                   </label>
-                  <p class="pl-1">or drag and drop</p>
                 </div>
                 <p class="text-xs leading-5 text-gray-600">PNG, JPG, GIF up to 10MB</p>
               </div>
