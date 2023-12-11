@@ -19,6 +19,7 @@ defmodule Flyster.Accounts.User do
     field :phone_number, :string
     field :email, :string
     field :profile_picture, :string
+    field :cover_picture, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
     field :confirmed_at, :naive_datetime
@@ -155,7 +156,7 @@ defmodule Flyster.Accounts.User do
 
   def public_info_changeset(user, attrs, _opts \\ []) do
     user
-    |> cast(attrs, [:first_name, :last_name, :username, :level, :role_id, :profile_picture])
+    |> cast(attrs, [:first_name, :last_name, :username, :level, :role_id, :profile_picture, :cover_picture])
     |> validate_required([:first_name, :last_name, :username, :level, :role_id])
     |> validate_length(:first_name, min: 2, max: 22)
     |> validate_length(:last_name, min: 2, max: 22)

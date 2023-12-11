@@ -30,6 +30,7 @@ defmodule FlysterWeb.UserSettingsLive do
       |> assign(:current_email, user.email)
       |> assign(:uploaded_files, [])
       |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg), max_entries: 1)
+      |> allow_upload(:cover_picture, accept: ~w(.jpg .jpeg), max_entries: 1)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:public_info_form, to_form(public_info_changeset))
@@ -39,95 +40,143 @@ defmodule FlysterWeb.UserSettingsLive do
     {:ok, socket}
   end
 
-  def handle_event("validate_email", params, socket) do
-    %{"current_password" => password, "user" => user_params} = params
+  # Validations
 
-    email_form =
-      socket.assigns.current_user
-      |> Accounts.change_user_email(user_params)
-      |> Map.put(:action, :validate)
-      |> to_form()
+  def handle_event(action, params, socket) do
+    cond do
+      action == "validate_email" ->
+        %{"current_password" => password, "user" => user_params} = params
 
-    {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
-  end
-
-  def handle_event("update_email", params, socket) do
-    %{"current_password" => password, "user" => user_params} = params
-    user = socket.assigns.current_user
-
-    case Accounts.apply_user_email(user, password, user_params) do
-      {:ok, applied_user} ->
-        Accounts.deliver_user_update_email_instructions(
-          applied_user,
-          user.email,
-          &url(~p"/users/settings/confirm_email/#{&1}")
-        )
-
-        info = "A link to confirm your email change has been sent to the new address."
-        {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
-
-      {:error, changeset} ->
-        {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
-    end
-  end
-
-  def handle_event("validate_password", params, socket) do
-    %{"current_password" => password, "user" => user_params} = params
-
-    password_form =
-      socket.assigns.current_user
-      |> Accounts.change_user_password(user_params)
-      |> Map.put(:action, :validate)
-      |> to_form()
-
-    {:noreply, assign(socket, password_form: password_form, current_password: password)}
-  end
-
-  def handle_event("update_password", params, socket) do
-    %{"current_password" => password, "user" => user_params} = params
-    user = socket.assigns.current_user
-
-    case Accounts.update_user_password(user, password, user_params) do
-      {:ok, user} ->
-        password_form =
-          user
-          |> Accounts.change_user_password(user_params)
+        email_form =
+          socket.assigns.current_user
+          |> Accounts.change_user_email(user_params)
+          |> Map.put(:action, :validate)
           |> to_form()
 
-        {:noreply, assign(socket, trigger_submit: true, password_form: password_form)}
+        {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
 
-      {:error, changeset} ->
-        {:noreply, assign(socket, password_form: to_form(changeset))}
+      action == "validate_password" ->
+        %{"current_password" => password, "user" => user_params} = params
+
+        password_form =
+          socket.assigns.current_user
+          |> Accounts.change_user_password(user_params)
+          |> Map.put(:action, :validate)
+          |> to_form()
+
+        {:noreply, assign(socket, password_form: password_form, current_password: password)}
+
+      action == "validate_public_info" ->
+        public_info_form =
+          socket.assigns.current_user
+          |> Accounts.change_public_info(params["user"])
+          |> Map.put(:action, :validate)
+          |> to_form()
+
+        {:noreply, assign(socket, public_info_form: public_info_form)}
+
+      action == "validate_personal_info" ->
+        personal_info_form =
+          socket.assigns.current_user
+          |> Accounts.change_private_info(params["user"])
+          |> Map.put(:action, :validate)
+          |> to_form()
+
+        {:noreply, assign(socket, personal_info_form: personal_info_form)}
+
+      action == "update_email" ->
+        %{"current_password" => password, "user" => user_params} = params
+        user = socket.assigns.current_user
+
+        case Accounts.apply_user_email(user, password, user_params) do
+          {:ok, applied_user} ->
+            Accounts.deliver_user_update_email_instructions(
+              applied_user,
+              user.email,
+              &url(~p"/users/settings/confirm_email/#{&1}")
+            )
+
+            info = "A link to confirm your email change has been sent to the new address."
+            {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
+
+          {:error, changeset} ->
+            {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
+        end
+      action == "update_password" ->
+        %{"current_password" => password, "user" => user_params} = params
+        user = socket.assigns.current_user
+
+        case Accounts.update_user_password(user, password, user_params) do
+          {:ok, user} ->
+            password_form =
+              user
+              |> Accounts.change_user_password(user_params)
+              |> to_form()
+
+            {:noreply, assign(socket, trigger_submit: true, password_form: password_form)}
+
+          {:error, changeset} ->
+            {:noreply, assign(socket, password_form: to_form(changeset))}
+        end
+      action == "update_personal_info" ->
+        user = socket.assigns.current_user
+
+        case Accounts.apply_private_info_changes(user, params["user"]) do
+          {:ok, user} ->
+            info = "Private Information successfully updated."
+
+            {:noreply,
+              socket
+              |> put_flash(:info, info)
+              |> redirect(to: ~p"/users/settings")}
+
+          {:error, changeset} ->
+            {:noreply, assign(socket, personal_info_form: to_form(changeset))}
+        end
+      action == "update_public_info" ->
+        public_info_data(params, socket)
     end
   end
 
-  def handle_event("validate_public_info", params, socket) do
-    public_info_form =
-      socket.assigns.current_user
-      |> Accounts.change_public_info(params["user"])
-      |> Map.put(:action, :validate)
-      |> to_form()
-
-    {:noreply, assign(socket, public_info_form: public_info_form)}
-  end
-
-  def handle_event("update_public_info", params, socket) do
+  defp public_info_data(params, socket) do
     user = socket.assigns.current_user
 
-    if Enum.empty?(socket.assigns.uploads.profile_picture.entries) do
-      update_public_info(socket, user, params["user"])
-    else
-      consumed_image = consume_profile_pic(socket)
-      IO.inspect consumed_image
-      user_params = Map.put(params["user"], "profile_picture", consumed_image)
-      IO.inspect user_params
-      update_public_info(socket, user, user_params)
+    cond do
+      picture_uploads_absent?(socket) ->
+        update_public_info(socket, user, params["user"])
+
+      picture_uploads_present?(socket) ->
+        profile_picture = consume_picture(socket, :profile_picture)
+        cover_picture = consume_picture(socket, :cover_picture)
+
+        pp_params = Map.put(params["user"], "profile_picture", profile_picture)
+        user_params = Map.put(pp_params, "cover_picture", cover_picture)
+
+        update_public_info(socket, user, user_params)
+
+      !Enum.empty?(socket.assigns.uploads.profile_picture.entries) ->
+        consumed_image = consume_picture(socket, :profile_picture)
+        user_params = Map.put(params["user"], "profile_picture", consumed_image)
+        update_public_info(socket, user, user_params)
+
+      !Enum.empty?(socket.assigns.uploads.cover_picture.entries) ->
+        consumed_image = consume_picture(socket, :cover_picture)
+        user_params = Map.put(params["user"], "cover_picture", consumed_image)
+        update_public_info(socket, user, user_params)
     end
   end
 
-  defp consume_profile_pic(socket) do
+  defp picture_uploads_absent?(socket) do
+    Enum.empty?(socket.assigns.uploads.profile_picture.entries) && Enum.empty?(socket.assigns.uploads.cover_picture.entries)
+  end
+
+  defp picture_uploads_present?(socket) do
+    !Enum.empty?(socket.assigns.uploads.profile_picture.entries) && !Enum.empty?(socket.assigns.uploads.cover_picture.entries)
+  end
+
+  defp consume_picture(socket, field) do
     [file_path | _] =
-      consume_uploaded_entries(socket, :profile_picture, fn %{path: path}, _entry ->
+      consume_uploaded_entries(socket, field, fn %{path: path}, _entry ->
         dest = Path.join([:code.priv_dir(:flyster), "static", "uploads", Path.basename(path)])
         File.cp!(path, dest)
         {:ok, ~p"/uploads/#{Path.basename(dest)}"}
@@ -138,7 +187,7 @@ defmodule FlysterWeb.UserSettingsLive do
 
   defp update_public_info(socket, user, user_params) do
     case Accounts.apply_public_info_changes(user, user_params) do
-      {:ok, updated_user} ->
+      {:ok, _updated_user} ->
 
         info = "Public Information successfully updated."
         {:noreply,
@@ -148,33 +197,6 @@ defmodule FlysterWeb.UserSettingsLive do
 
       {:error, changeset} ->
         {:noreply, assign(socket, public_info_form: to_form(changeset))}
-    end
-  end
-
-  def handle_event("validate_personal_info", params, socket) do
-    personal_info_form =
-      socket.assigns.current_user
-      |> Accounts.change_private_info(params["user"])
-      |> Map.put(:action, :validate)
-      |> to_form()
-
-    {:noreply, assign(socket, personal_info_form: personal_info_form)}
-  end
-
-  def handle_event("update_personal_info", params, socket) do
-    user = socket.assigns.current_user
-
-    case Accounts.apply_private_info_changes(user, params["user"]) do
-      {:ok, user} ->
-        info = "Private Information successfully updated."
-
-        {:noreply,
-          socket
-          |> put_flash(:info, info)
-          |> redirect(to: ~p"/users/settings")}
-
-      {:error, changeset} ->
-        {:noreply, assign(socket, personal_info_form: to_form(changeset))}
     end
   end
 

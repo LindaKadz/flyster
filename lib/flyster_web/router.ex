@@ -70,6 +70,9 @@ defmodule FlysterWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
+      # user profile
+      live "/users/:id/profile", ProfileShowLive, :show
+
       #events
       live "/events", EventsIndexLive, :index
       live "/events/new", EventsNewLive, :new

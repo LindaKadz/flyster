@@ -8,6 +8,9 @@ defmodule Flyster.Context.Accounts do
 
   alias Flyster.Accounts.{Role, User, UserToken, UserNotifier}
   alias Flyster.Context.Events
+  alias Flyster.Challenges.Challenge
+  alias Flyster.Goals.Goal
+  alias Flyster.Events.Event
 
   ## Database getters
 
@@ -477,5 +480,61 @@ defmodule Flyster.Context.Accounts do
 
   def find_event_with_attendees(id) do
     id |> Events.find_event |> Repo.preload(:attendees)
+  end
+
+  @doc ~S"""
+  Gets a users activities
+
+  ## Examples
+
+      iex> get_all_user_activities(id, activity)
+      %Event{id: x, name: y, attendees: [%User{id: x,}, %User{id: y}]}
+
+  """
+
+  def get_all_user_activities(user_id, activity) do
+    query = compose_query(user_id, activity)
+
+    query |> Repo.all()
+  end
+
+  @doc ~S"""
+  Gets a users activities
+
+  ## Examples
+
+      iex> get_all_public_user_activities(id, activity)
+      %Event{id: x, name: y, attendees: [%User{id: x,}, %User{id: y}]}
+
+  """
+
+  def get_all_public_user_activities(user_id, activity) do
+    query =
+      if activity == "goal" do
+        from goal in Goal,
+                  where: goal.creator_id == ^user_id and goal.private == false
+      else
+        compose_query(user_id, activity)
+      end
+
+    query |> Repo.all()
+  end
+
+  defp compose_query(user_id, activity) do
+    cond do
+      activity == "challenge" ->
+        from challenge in Challenge,
+                  where: challenge.creator_id == ^user_id
+      activity == "event" ->
+        from event in Event,
+                  where: event.host_id == ^user_id
+      activity == "goal" ->
+        from goal in Goal,
+                  where: goal.creator_id == ^user_id
+    end
+  end
+
+  def get_user_profile(id) do
+    id |> get_user! |> Repo.preload(:role)
   end
 end
