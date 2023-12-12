@@ -39,7 +39,7 @@ defmodule Flyster.Events.Event do
   def run_validations(changeset) do
     changeset
     |> validate_required([:name, :time, :date, :description, :duration, :city, :country, :event_type_id, :host_id])
-    |> validate_length(:name, min: 5, max: 22)
+    |> validate_length(:name, min: 5, max: 50)
     |> validate_length(:description, min: 10)
     |> validate_date()
   end
