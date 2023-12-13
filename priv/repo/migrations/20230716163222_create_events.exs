@@ -17,6 +17,7 @@ defmodule Flyster.Repo.Migrations.CreateEvents do
       add :address, :string
       add :currency, :string
       add :duration, :string
+      add :available_spots, :string, null: false
 
       timestamps()
     end
