@@ -1,0 +1,86 @@
+<div>
+  <div class="px-4 sm:px-0">
+    <h3 class="text-base font-semibold leading-7 text-gray-900"><%= @event.name %></h3>
+    <%= if @event.available_spots != "unlimited" do %>
+      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
+        This event has a cap of only <%= @event.available_spots %> spots,
+        <%= remaining_slots(@event.attendees, @event.available_spots) %> spots left.
+      </p>
+    <% end %>
+  </div>
+  <div class="mt-6">
+    <dl class="grid grid-cols-1 sm:grid-cols-2">
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Hosted by</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2"><%= @event.host.first_name %> <%= @event.host.last_name %></dd>
+      </div>
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Location</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2"><%= @event.city %>, <%= full_country_name(@event.country) %></dd>
+      </div>
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Date</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2"><%= @event.date %></dd>
+      </div>
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Duration</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2"><%= @event.duration %></dd>
+      </div>
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Price</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
+          <%= if @event.price == 0 || @event.price == 0.0 do %>
+             Free
+          <%else %>
+            <%= @event.currency %> <%= @event.price %>
+          <% end %>
+        </dd>
+      </div>
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Description</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
+          <%= @event.description %>
+        </dd>
+      </div>
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Terms / Rules / Requirements</dt>
+        <dd class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
+          <%= @event.rules %>
+        </dd>
+      </div>
+      <div class="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
+        <dt class="text-sm font-medium leading-6 text-gray-900">Book your spot!</dt>
+        <dd class="mt-2 text-sm text-gray-900">
+          <%= if Enum.count(@event.attendees) == @event.available_spots do %>
+            <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
+              Sorry, this event has sold out!
+            </p>
+          <% else %>
+            <%= if @current_user && @event.host != @current_user do %>
+              <.simple_form for={@attend_event_form} id="attend_event_form" phx-submit="update_event_attendees">
+                <.input field={@attend_event_form[:user_id]} type="hidden" value={@current_user.id} required />
+                <.input field={@attend_event_form[:event_id]} type="hidden" value={@event.id} required />
+
+                <:actions>
+                  <%= if !Enum.member?(@event.attendees, @current_user) do %>
+                    <.button phx-disable-with="Adding you to the attendee list..." class="ml-3 inline-flex items-center rounded-md bg-official px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
+                      Attend Event
+                    </.button>
+                  <% else %>
+                    <.button phx-disable-with="Removing you from the attendee list..." class="ml-3 inline-flex items-center rounded-md bg-official px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
+                      De-Register from Event
+                    </.button>
+                  <% end %>
+                </:actions>
+              </.simple_form>
+            <% else %>
+              <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
+                You have already registered for this event.
+              </p>
+            <% end %>
+          <% end %>
+        </dd>
+      </div>
+    </dl>
+  </div>
+</div>

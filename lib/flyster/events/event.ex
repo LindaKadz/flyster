@@ -19,6 +19,7 @@ defmodule Flyster.Events.Event do
     field :country, :string
     field :currency, :string
     field :duration, :string
+    field :available_spots, :string
 
     belongs_to :event_type, Flyster.Events.EventType
     belongs_to :host, Flyster.Accounts.User, foreign_key: :host_id
@@ -30,7 +31,7 @@ defmodule Flyster.Events.Event do
 
   def changeset(event_type, attrs) do
     event_type
-    |> cast(attrs, [:name, :time, :date, :description, :duration, :rules, :price, :customer_paid, :address, :currency, :event_type_id, :host_id, :city, :country,])
+    |> cast(attrs, [:name, :time, :date, :description, :duration, :rules, :price, :customer_paid, :address, :currency, :event_type_id, :host_id, :city, :country, :available_spots])
     |> run_validations()
     |> foreign_key_constraint(:event_type_id)
     |> foreign_key_constraint(:host_id)
@@ -38,7 +39,7 @@ defmodule Flyster.Events.Event do
 
   def run_validations(changeset) do
     changeset
-    |> validate_required([:name, :time, :date, :description, :duration, :city, :country, :event_type_id, :host_id])
+    |> validate_required([:name, :time, :date, :description, :duration, :city, :country, :event_type_id, :host_id, :available_spots])
     |> validate_length(:name, min: 5, max: 50)
     |> validate_length(:description, min: 10)
     |> validate_date()

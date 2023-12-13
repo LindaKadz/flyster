@@ -3,45 +3,6 @@ defmodule FlysterWeb.EventsShowLive do
 
   alias Flyster.Context.Events
 
-  def render(assigns) do
-    ~H"""
-    <div class="grid gap-6">
-     <h1> <%= @event.name %> </h1>
-     <p> <%= @event.description %> </p>
-     <p> <%= @event.rules %> </p>
-     <p> <%= @event.city %> </p>
-     <p> <%= @event.host.username %> </p>
-
-    </div>
-    <br/>
-    <div>
-     <%= if @current_user && @event.host != @current_user do %>
-       <.simple_form for={@attend_event_form} id="attend_event_form" phx-submit="update_event_attendees">
-         <.input field={@attend_event_form[:user_id]} type="hidden" value={@current_user.id} required />
-         <.input field={@attend_event_form[:event_id]} type="hidden" value={@event.id} required />
-
-         <:actions>
-           <%= if !Enum.member?(@event.attendees, @current_user) do %>
-             <.button phx-disable-with="Adding you to the attendee list..." class="w-full">
-               Attend Event
-             </.button>
-           <% else %>
-             <.button phx-disable-with="Removing you from the attendee list..." class="w-full">
-               De-Register from Event
-             </.button>
-           <% end %>
-         </:actions>
-       </.simple_form>
-     <% else %>
-       <div>
-         You have already registered for this event.
-       </div>
-     <% end %>
-    </div>
-
-    """
-  end
-
   def mount(%{"id" => id}, _session, socket) do
     event = Events.find_event_with_attendees(id)
     current_user = socket.assigns.current_user
@@ -58,13 +19,21 @@ defmodule FlysterWeb.EventsShowLive do
         {:noreply,
           socket
           |> put_flash(:info, flash)
-          |> redirect(to: ~p"/events/index")}
+          |> redirect(to: ~p"/events")}
       {:error, _, action} ->
         flash = if action == "Added", do: "We experienced a problem trying to register you to #{event.name}, please try again later.", else: "We experienced a problem trying to remove you from #{event.name} attendee list, please try again later."
         {:noreply,
          socket
          |> put_flash(:error, flash)
-         |> redirect(to: ~p"/events/index")}
+         |> redirect(to: ~p"/events")}
     end
+  end
+
+  defp full_country_name(country_code) do
+    FlysterWeb.SharedComponents.full_country_name(country_code)
+  end
+
+  defp remaining_slots(registered_people, available_slots) do
+    String.to_integer(available_slots) - Enum.count(registered_people)
   end
 end
