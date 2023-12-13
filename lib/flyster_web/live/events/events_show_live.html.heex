@@ -49,7 +49,6 @@
         </dd>
       </div>
       <div class="border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0">
-        <dt class="text-sm font-medium leading-6 text-gray-900">Book your spot!</dt>
         <dd class="mt-2 text-sm text-gray-900">
           <%= if Enum.count(@event.attendees) == @event.available_spots do %>
             <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
@@ -63,10 +62,18 @@
 
                 <:actions>
                   <%= if !Enum.member?(@event.attendees, @current_user) do %>
+                    <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
+                      Book your spot!
+                    </p>
+                    <br>
                     <.button phx-disable-with="Adding you to the attendee list..." class="ml-3 inline-flex items-center rounded-md bg-official px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
                       Attend Event
                     </.button>
                   <% else %>
+                  <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
+                    You have already registered for this event.
+                  </p>
+                  <br>
                     <.button phx-disable-with="Removing you from the attendee list..." class="ml-3 inline-flex items-center rounded-md bg-official px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
                       De-Register from Event
                     </.button>
