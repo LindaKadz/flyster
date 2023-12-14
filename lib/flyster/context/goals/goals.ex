@@ -94,6 +94,22 @@ defmodule Flyster.Context.Goals do
     query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
   end
 
+  @doc """
+  Gets a single goal.
+
+  Raises `Ecto.NoResultsError` if the Goal does not exist.
+
+  ## Examples
+
+      iex> get_goal!(123)
+      %Goal{}
+
+      iex> get_goal!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_goal!(id), do: Repo.get!(Goal, id)
+
   #### GOAL COMMENTS
 
   @doc """
@@ -141,5 +157,23 @@ defmodule Flyster.Context.Goals do
               where: goal.creator_id == ^user_id
 
     query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
+  end
+
+  @doc """
+  It updates the data saved in the database with new information
+
+  ## Examples
+
+      iex> apply_goal_changes(goal, %{id: ...})
+      {:ok, %Goal{}}
+
+      iex> apply_goal_changes(goal, %{id: ...})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def apply_goal_changes(goal, attrs) do
+    goal
+    |> change_goal(attrs)
+    |> Repo.update()
   end
 end

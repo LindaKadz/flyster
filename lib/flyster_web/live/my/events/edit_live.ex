@@ -5,7 +5,7 @@ defmodule FlysterWeb.MyEventsEditLive do
 
   def mount(%{"id" => id}, _session, socket) do
     event = Events.find_event(id)
-    event_changeset = Events.change_event_details(event)
+    event_changeset = Events.change_event(event)
 
     socket =
       socket
@@ -19,7 +19,7 @@ defmodule FlysterWeb.MyEventsEditLive do
   def handle_event("validate_event", params, socket) do
     event_form =
       socket.assigns.event
-      |> Events.change_event_details(params["event"])
+      |> Events.change_event(params["event"])
       |> Map.put(:action, :validate)
       |> to_form()
 
