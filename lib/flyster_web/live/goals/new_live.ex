@@ -26,7 +26,7 @@ defmodule FlysterWeb.GoalsNewLive do
           {:noreply,
             socket
             |> put_flash(:info, "Documented!")
-            |> redirect(to: ~p"/goals")}
+            |> redirect(to: ~p"/my/goals")}
 
         {:error, %Ecto.Changeset{} = changeset} ->
           {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
