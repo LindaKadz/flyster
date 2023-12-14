@@ -5,7 +5,7 @@ defmodule FlysterWeb.EventsNewLive do
   alias Flyster.Events.Event
 
   def mount(_params, _session, socket) do
-    changeset = Events.change_event_creation(%Event{})
+    changeset = Events.change_event(%Event{})
 
     socket =
       socket
@@ -31,7 +31,7 @@ defmodule FlysterWeb.EventsNewLive do
   end
 
   def handle_event("validate", %{"event" => event_params}, socket) do
-    changeset = Events.change_event_creation(%Event{}, event_params)
+    changeset = Events.change_event(%Event{}, event_params)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
   end
 

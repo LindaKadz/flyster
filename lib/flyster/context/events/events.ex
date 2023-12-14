@@ -58,7 +58,7 @@ defmodule Flyster.Context.Events do
   """
   def create_event(event_params) do
     %Event{}
-    |> Event.changeset(event_params)
+    |> change_event(event_params)
     |> Repo.insert()
   end
 
@@ -95,11 +95,11 @@ defmodule Flyster.Context.Events do
 
   ## Examples
 
-      iex> change_event_creation(event)
+      iex> change_event(event)
       %Ecto.Changeset{data: %Event{}}
 
   """
-  def change_event_creation(%Event{} = event, attrs \\ %{}) do
+  def change_event(%Event{} = event, attrs \\ %{}) do
     Event.changeset(event, attrs)
   end
 
@@ -166,19 +166,6 @@ defmodule Flyster.Context.Events do
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for changing an event.
-
-  ## Examples
-
-      iex> change_event_details(event)
-      %Ecto.Changeset{data: %Event{}}
-
-  """
-  def change_event_details(event, attrs \\ %{}) do
-    Event.changeset(event, attrs)
-  end
-
-  @doc """
   It updates the data saved in the database with new information
 
   ## Examples
@@ -192,7 +179,7 @@ defmodule Flyster.Context.Events do
   """
   def apply_event_changes(event, attrs) do
     event
-    |> change_event_details(attrs)
+    |> change_event(attrs)
     |> Repo.update()
   end
 
