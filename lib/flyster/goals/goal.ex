@@ -23,7 +23,7 @@ defmodule Flyster.Goals.Goal do
     |> cast(attrs, [:description, :accomplished, :accomplish_by, :creator_id, :category, :private])
     |> validate_accomplish_by()
     |> validate_required([:description, :accomplish_by, :creator_id, :category, :private])
-    |> validate_length(:description, min: 5, max: 60)
+    |> validate_length(:description, min: 5, max: 100)
   end
 
   defp validate_accomplish_by(changeset) do
