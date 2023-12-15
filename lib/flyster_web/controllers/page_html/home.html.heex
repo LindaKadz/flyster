@@ -25,12 +25,20 @@
               Welcome to My Cheza, where all the dancers hang out, motivate and hold each other accountable.
               Discover the cool events dancers are organizing here.
             </p>
-            <div class="mt-10 flex items-center justify-center gap-x-6">
-              <a href="/users/register" class="rounded-lg bg-official px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
-                Sign Up
-              </a>
-              <a href="/users/log_in" class="text-sm font-semibold leading-6 text-white">Log in <span aria-hidden="true">→</span></a>
-            </div>
+            <%= if @current_user do %>
+              <div class="mt-10 flex items-center justify-center gap-x-6">
+                <a href="/about" class="rounded-lg bg-official px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
+                  Learn More
+                </a>
+              </div>
+            <% else %>
+              <div class="mt-10 flex items-center justify-center gap-x-6">
+                <a href="/users/register" class="rounded-lg bg-official px-3.5 py-2.5 text-md font-semibold text-white shadow-sm hover:bg-official focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-official">
+                  Sign Up
+                </a>
+                <a href="/users/log_in" class="text-sm font-semibold leading-6 text-white">Log in <span aria-hidden="true">→</span></a>
+              </div>
+            <% end %>
           </div>
         </div>
       </div>
