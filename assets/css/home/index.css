@@ -1,3 +1,8 @@
 .logo-navbar {
   height: 120px;
 }
+
+.banner-hero  {
+  height: 125vh;
+  background: linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8));
+}

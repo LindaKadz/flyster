@@ -32,7 +32,7 @@ defmodule FlysterWeb.ChallengesNewLive do
             </p>
           </div>
           <p>
-            <.input field={@form[:description]} type="text" required />
+            <.input field={@form[:description]} type="textarea" required />
           </p>
         </div>
       </div>

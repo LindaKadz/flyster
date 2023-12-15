@@ -66,6 +66,6 @@ defmodule Flyster.Context.Challenges do
     query = from challenge in Challenge,
               where: challenge.creator_id == ^user_id
 
-    query |> Repo.all()
+    query |> Repo.all() |> Repo.preload(:creator)
   end
 end
