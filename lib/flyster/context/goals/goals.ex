@@ -110,6 +110,20 @@ defmodule Flyster.Context.Goals do
   """
   def get_goal!(id), do: Repo.get!(Goal, id)
 
+  @doc ~S"""
+  Gets all the goals in the database
+
+  ## Examples
+
+      iex> all_goals()
+      [%Goal{id: 1, description: y}, %Goal{id: z, description: 2}, ...]
+
+  """
+
+  def all_goals do
+    Repo.all(Goal) |> Repo.preload(:creator)
+  end
+
   #### GOAL COMMENTS
 
   @doc """
@@ -175,5 +189,20 @@ defmodule Flyster.Context.Goals do
     goal
     |> change_goal(attrs)
     |> Repo.update()
+  end
+
+
+  @doc ~S"""
+  Gets all the goals in the database
+
+  ## Examples
+
+      iex> all_goal_comments()
+      [%GoalComment{id: 1, description: y}, %GoalComment{id: z, description: 2}, ...]
+
+  """
+
+  def all_goal_comments do
+    Repo.all(GoalComment) |> Repo.preload(:creator)
   end
 end

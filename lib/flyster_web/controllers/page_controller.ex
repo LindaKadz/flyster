@@ -10,4 +10,8 @@ defmodule FlysterWeb.PageController do
   def about(conn, _params) do
     render(conn, :about, layout: false)
   end
+
+  def privacy(conn, _params) do
+    render(conn, :privacy, layout: false)
+  end
 end

@@ -253,6 +253,20 @@ defmodule Flyster.Context.Accounts do
     |> Repo.update()
   end
 
+  @doc ~S"""
+  Gets all the users in the database
+
+  ## Examples
+
+      iex> all_users()
+      [%User{id: 1, email: y}, %User{id: z, email: 2}, ...]
+
+  """
+
+  def all_users do
+    Repo.all(User) |> Repo.preload(:role)
+  end
+
   @doc """
   Updates the user password.
 

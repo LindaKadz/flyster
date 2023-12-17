@@ -22,6 +22,7 @@ defmodule FlysterWeb.Router do
 
     get "/", PageController, :home
     get "/about", PageController, :about
+    get "/privacy-policy", PageController, :privacy
   end
 
   # Other scopes may use custom stacks.
@@ -90,6 +91,9 @@ defmodule FlysterWeb.Router do
       live "/challenges", ChallengesIndexLive, :index
       live "/challenges/new", ChallengesNewLive, :new
       live "/my/challenges", MyChallengesIndexLive, :index
+
+      #admin dashboard
+      live "/admin/dashboard", AdminDashboardLive, :index
     end
   end
 

@@ -1,6 +1,13 @@
 defmodule FlysterWeb.SharedComponents do
   @moduledoc false
   alias Flyster.Cldr
+  alias Flyster.Repo
+  alias Flyster.Goals.Goal
+  alias Flyster.Challenges.Challenge
+  alias Flyster.Events.Event
+  alias Flyster.Accounts.User
+
+  import Ecto.Query, warn: false
 
   ## Country Functions Country functions
 
@@ -50,5 +57,37 @@ defmodule FlysterWeb.SharedComponents do
     date = convert_to_date(accomplish_by_date)
 
     Date.compare(date, Date.utc_today())
+  end
+
+  @doc """
+  Queries to see how many records were created today
+
+  ## Examples
+
+      iex> records_created_today("users")
+      :gt
+
+  """
+
+  def records_created_today(record_name) do
+    date = NaiveDateTime.utc_now()
+
+    query =
+      cond do
+        record_name == "goal" ->
+          from g in Goal,
+                    where: g.inserted_at == ^date
+        record_name == "event" ->
+          from e in Event,
+                    where: e.inserted_at == ^date
+        record_name == "challenge" ->
+          from c in Challenge,
+                    where: c.inserted_at == ^date
+        record_name == "user" ->
+          from u in User,
+                    where: u.inserted_at == ^date
+      end
+
+    query |> Repo.all()
   end
 end
