@@ -68,4 +68,32 @@ defmodule Flyster.Context.Challenges do
 
     query |> Repo.all() |> Repo.preload(:creator)
   end
+
+  @doc ~S"""
+  Deletes challenges from the database
+
+  ## Examples
+
+      iex> all_challenges()
+      [%Challenge{id: 1, description: y}, %Challenge{id: z, description: 2}, ...]
+
+  """
+
+  def delete_challenge(challenge), do: Repo.delete(challenge)
+
+  @doc """
+  Gets a single challenge.
+
+  Raises `Ecto.NoResultsError` if the Challenge does not exist.
+
+  ## Examples
+
+      iex> get_challenge!(123)
+      %Goal{}
+
+      iex> get_challenge!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_challenge!(id), do: Repo.get!(Challenge, id)
 end
