@@ -7,10 +7,10 @@ defmodule FlysterWeb.MyEventsDeleteLive do
     event = Events.find_event(id)
 
     case Events.delete_event(event) do
-      {:ok, _} ->
+      {:ok, event} ->
         {:ok,
           socket
-          |> put_flash(:info, "Challenge successfully deleted.")
+          |> put_flash(:info, "#{event.name} event successfully deleted.")
           |> redirect(to: ~p"/my/events")}
       {:error, _} ->
         {:noreply,

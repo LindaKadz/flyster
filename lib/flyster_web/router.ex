@@ -79,17 +79,20 @@ defmodule FlysterWeb.Router do
       live "/events/:id", EventsShowLive, :show
       live "/my/events", MyEventsIndexLive, :index
       live "/my/events/:id/edit", MyEventsEditLive, :edit
+      live "/my/events/:id", MyEventsDeleteLive, :delete
 
       #goals
       live "/goals", GoalsIndexLive, :index
       live "/goals/new", GoalsNewLive, :new
       live "/my/goals", MyGoalsIndexLive, :index
-      live "/my/goals/:id/mark_as_complete", MyGoalsEditLive, :index
+      live "/my/goals/:id/mark_as_complete", MyGoalsEditLive, :edit
+      live "/my/goals/:id", MyGoalsDeleteLive, :delete
 
       #challenges
       live "/challenges", ChallengesIndexLive, :index
       live "/challenges/new", ChallengesNewLive, :new
       live "/my/challenges", MyChallengesIndexLive, :index
+      live "/my/challenges/:id", MyChallengesDeleteLive, :delete
     end
   end
 

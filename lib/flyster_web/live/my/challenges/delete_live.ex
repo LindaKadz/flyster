@@ -7,10 +7,10 @@ defmodule FlysterWeb.MyChallengesDeleteLive do
     challenge = Challenges.get_challenge!(id)
 
     case Challenges.delete_challenge(challenge) do
-      {:ok, _} ->
+      {:ok, challenge} ->
         {:ok,
           socket
-          |> put_flash(:info, "Delete successfull")
+          |> put_flash(:info, "#{challenge.category} has been successfully deleted.")
           |> redirect(to: ~p"/my/challenges")}
       {:error, _} ->
         {:noreply,

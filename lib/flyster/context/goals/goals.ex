@@ -176,4 +176,18 @@ defmodule Flyster.Context.Goals do
     |> change_goal(attrs)
     |> Repo.update()
   end
+
+  @doc ~S"""
+  Deletes a single goal from the database
+
+  ## Examples
+
+      iex> delete_goal()
+      {:ok, %{description: ...}}
+
+  """
+
+  def delete_goal(goal) do
+    goal |> Repo.preload(:comments) |> Repo.delete()
+  end
 end
