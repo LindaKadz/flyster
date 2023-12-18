@@ -87,6 +87,7 @@ defmodule FlysterWeb.Router do
       live "/my/goals", MyGoalsIndexLive, :index
       live "/my/goals/:id/mark_as_complete", MyGoalsEditLive, :edit
       live "/my/goals/:id", MyGoalsDeleteLive, :delete
+      live "/my/goal_comment/:id", MyGoalCommentDeleteLive, :delete
 
       #challenges
       live "/challenges", ChallengesIndexLive, :index
