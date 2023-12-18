@@ -4,7 +4,6 @@ defmodule FlysterWeb.MyChallengesDeleteLive do
   alias Flyster.Context.Challenges
 
   def mount(%{"id" => id}, _session, socket) do
-    IO.inspect id
     challenge = Challenges.get_challenge!(id)
 
     case Challenges.delete_challenge(challenge) do

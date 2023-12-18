@@ -200,4 +200,15 @@ defmodule Flyster.Context.Events do
     query |> Repo.all() |> Repo.preload([:attendees, :event_type])
   end
 
+  @doc ~S"""
+  Deletes a single event from the database
+
+  ## Examples
+
+      iex> delete_event()
+      {:ok, %{description: ...}}
+
+  """
+
+  def delete_event(event), do: Repo.delete(event)
 end
