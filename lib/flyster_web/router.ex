@@ -72,6 +72,7 @@ defmodule FlysterWeb.Router do
 
       # user profile
       live "/users/:id/profile", ProfileShowLive, :show
+      live "/users/:id", UserProfileDeleteLive, :delete
 
       #events
       live "/events", EventsIndexLive, :index

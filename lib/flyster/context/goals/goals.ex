@@ -220,4 +220,20 @@ defmodule Flyster.Context.Goals do
   def delete_comment(comment) do
     comment |> Repo.delete()
   end
+
+  @doc """
+  Returns a list of comments for one user.
+
+  ## Examples
+
+      iex> all_my_comments(user_id)
+      [%GoalComment{id: x, description: y}, %GoalComment{id: z, description: r}, ...]
+
+  """
+  def all_my_comments(user_id) do
+    query = from comment in GoalComment,
+              where: comment.creator_id == ^user_id
+
+    query |> Repo.all()
+  end
 end
