@@ -110,39 +110,6 @@ defmodule Flyster.Context.Goals do
   """
   def get_goal!(id), do: Repo.get!(Goal, id)
 
-  #### GOAL COMMENTS
-
-  @doc """
-  Creates a goal comment.
-
-  ## Examples
-
-      iex> add_goal_comment(%{description: "get ayesha", accomplish_by: "3rd June 2024"...})
-      {:ok, %GoalComment{}}
-
-      iex> add_goal_comment(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def add_goal_comment(goal_comment_params) do
-    %GoalComment{}
-    |> GoalComment.changeset(goal_comment_params)
-    |> Repo.insert()
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for updating a goal.
-
-  ## Examples
-
-      iex> goal_comment_changeset(goal)
-      %Ecto.Changeset{data: %GoalComment{}}
-
-  """
-  def goal_comment_changeset(goal_comment, attrs \\ %{}) do
-    GoalComment.changeset(goal_comment, attrs)
-  end
-
   @doc """
   Returns a list of goals for one user.
 
@@ -189,5 +156,68 @@ defmodule Flyster.Context.Goals do
 
   def delete_goal(goal) do
     goal |> Repo.preload(:comments) |> Repo.delete()
+  end
+
+  #### GOAL COMMENTS
+
+  @doc """
+  Creates a goal comment.
+
+  ## Examples
+
+      iex> add_goal_comment(%{description: "get ayesha", accomplish_by: "3rd June 2024"...})
+      {:ok, %GoalComment{}}
+
+      iex> add_goal_comment(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def add_goal_comment(goal_comment_params) do
+    %GoalComment{}
+    |> GoalComment.changeset(goal_comment_params)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for updating a goal.
+
+  ## Examples
+
+      iex> goal_comment_changeset(goal)
+      %Ecto.Changeset{data: %GoalComment{}}
+
+  """
+  def goal_comment_changeset(goal_comment, attrs \\ %{}) do
+    GoalComment.changeset(goal_comment, attrs)
+  end
+
+  @doc """
+  Gets a single goal.
+
+  Raises `Ecto.NoResultsError` if the Goal does not exist.
+
+  ## Examples
+
+      iex> get_goal!(123)
+      %Goal{}
+
+      iex> get_goal!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_comment!(id), do: Repo.get!(GoalComment, id)
+
+  @doc ~S"""
+  Deletes a single comment from the database
+
+  ## Examples
+
+      iex> delete_comment()
+      {:ok, %{description: ...}}
+
+  """
+
+  def delete_comment(comment) do
+    comment |> Repo.delete()
   end
 end

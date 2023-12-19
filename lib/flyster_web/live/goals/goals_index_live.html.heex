@@ -39,7 +39,7 @@
             <%= goal.description %>
           </p>
           <p class="text-gray-500 dark:text-gray-400 text-base py-1 my-0.5">
-           <%= NaiveDateTime.to_string(goal.inserted_at) %>
+           <%= FlysterWeb.SharedComponents.convert_date(goal.inserted_at) %>
           </p>
           <div class="border-gray-200 dark:border-gray-600 border border-b-0 my-1"></div>
 
@@ -76,11 +76,11 @@
                     <div class="flex justify-between gap-x-4">
                       <div class="py-0.5 text-xs leading-5 text-gray-500"><span class="font-medium text-gray-900"><%= goal_comment.creator.username %></span> commented</div>
                       <%= if goal_comment.creator.id == @current_user.id do %>
-                        <a <a href={~p"/my/goal_comment/#{goal_comment.id}"}>>
+                        <a href={~p"/my/goal_comment/#{goal_comment.id}"}>
                           <p class="flex-none py-0.5 text-xs leading-5 text-gray-500">Delete</p>
                         </a>
                       <% end %>
-                      <time datetime="2023-01-23T15:56" class="flex-none py-0.5 text-xs leading-5 text-gray-500">3d ago</time>
+                      <time datetime="2023-01-23T15:56" class="flex-none py-0.5 text-xs leading-5 text-gray-500"><%= FlysterWeb.SharedComponents.convert_date(goal_comment.inserted_at) %></time>
                     </div>
                     <p class="text-sm leading-6 text-gray-500"><%= goal_comment.comment %></p>
                   </div>

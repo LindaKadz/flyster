@@ -64,7 +64,7 @@
             Level: <%= challenge.level %>
           </p>
           <p class="text-gray-500 dark:text-gray-400 text-base py-1 my-0.5">
-           <%= NaiveDateTime.to_string(challenge.inserted_at) %>
+           <%= FlysterWeb.SharedComponents.convert_date(challenge.inserted_at) %>
           </p>
           <div class="border-gray-200 dark:border-gray-600 border border-b-0 my-1"></div>
 

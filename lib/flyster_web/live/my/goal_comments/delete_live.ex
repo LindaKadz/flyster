@@ -4,7 +4,7 @@ defmodule FlysterWeb.MyGoalCommentDeleteLive do
   alias Flyster.Context.Goals
 
   def mount(%{"id" => id}, _session, socket) do
-    comment = Goals.get_goal_comment!(id)
+    comment = Goals.get_comment!(id)
 
     case Goals.delete_comment(comment) do
       {:ok, goal} ->
