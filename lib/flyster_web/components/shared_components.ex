@@ -51,4 +51,8 @@ defmodule FlysterWeb.SharedComponents do
 
     Date.compare(date, Date.utc_today())
   end
+
+  def convert_date(date) do
+    date |> NaiveDateTime.to_date() |> Date.to_string()
+  end
 end

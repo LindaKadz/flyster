@@ -110,6 +110,54 @@ defmodule Flyster.Context.Goals do
   """
   def get_goal!(id), do: Repo.get!(Goal, id)
 
+  @doc """
+  Returns a list of goals for one user.
+
+  ## Examples
+
+      iex> all_my_goals(user_id)
+      [%Goal{id: x, description: y}, %Goal{id: z, description: r}, ...]
+
+  """
+  def all_my_goals(user_id) do
+    query = from goal in Goal,
+              where: goal.creator_id == ^user_id
+
+    query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
+  end
+
+  @doc """
+  It updates the data saved in the database with new information
+
+  ## Examples
+
+      iex> apply_goal_changes(goal, %{id: ...})
+      {:ok, %Goal{}}
+
+      iex> apply_goal_changes(goal, %{id: ...})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def apply_goal_changes(goal, attrs) do
+    goal
+    |> change_goal(attrs)
+    |> Repo.update()
+  end
+
+  @doc ~S"""
+  Deletes a single goal from the database
+
+  ## Examples
+
+      iex> delete_goal()
+      {:ok, %{description: ...}}
+
+  """
+
+  def delete_goal(goal) do
+    goal |> Repo.preload(:comments) |> Repo.delete()
+  end
+
   #### GOAL COMMENTS
 
   @doc """
@@ -144,36 +192,48 @@ defmodule Flyster.Context.Goals do
   end
 
   @doc """
-  Returns a list of goals for one user.
+  Gets a single goal.
+
+  Raises `Ecto.NoResultsError` if the Goal does not exist.
 
   ## Examples
 
-      iex> all_my_goals(user_id)
-      [%Goal{id: x, description: y}, %Goal{id: z, description: r}, ...]
+      iex> get_goal!(123)
+      %Goal{}
+
+      iex> get_goal!(456)
+      ** (Ecto.NoResultsError)
 
   """
-  def all_my_goals(user_id) do
-    query = from goal in Goal,
-              where: goal.creator_id == ^user_id
+  def get_comment!(id), do: Repo.get!(GoalComment, id)
 
-    query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
+  @doc ~S"""
+  Deletes a single comment from the database
+
+  ## Examples
+
+      iex> delete_comment()
+      {:ok, %{description: ...}}
+
+  """
+
+  def delete_comment(comment) do
+    comment |> Repo.delete()
   end
 
   @doc """
-  It updates the data saved in the database with new information
+  Returns a list of comments for one user.
 
   ## Examples
 
-      iex> apply_goal_changes(goal, %{id: ...})
-      {:ok, %Goal{}}
-
-      iex> apply_goal_changes(goal, %{id: ...})
-      {:error, %Ecto.Changeset{}}
+      iex> all_my_comments(user_id)
+      [%GoalComment{id: x, description: y}, %GoalComment{id: z, description: r}, ...]
 
   """
-  def apply_goal_changes(goal, attrs) do
-    goal
-    |> change_goal(attrs)
-    |> Repo.update()
+  def all_my_comments(user_id) do
+    query = from comment in GoalComment,
+              where: comment.creator_id == ^user_id
+
+    query |> Repo.all()
   end
 end

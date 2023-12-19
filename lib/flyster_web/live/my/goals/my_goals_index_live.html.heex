@@ -63,7 +63,7 @@
                 <%= goal.description %>
               </p>
               <p class="text-gray-500 dark:text-gray-400 text-base py-1 my-0.5">
-               <%= NaiveDateTime.to_string(goal.inserted_at) %>
+               <%= FlysterWeb.SharedComponents.convert_date(goal.inserted_at) %>
               </p>
               <div class="border-gray-200 dark:border-gray-600 border border-b-0 my-1"></div>
 
@@ -80,7 +80,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 dark:text-official">
                       <path fill-rule="evenodd" d="M12.963 2.286a.75.75 0 00-1.071-.136 9.742 9.742 0 00-3.539 6.177A7.547 7.547 0 016.648 6.61a.75.75 0 00-1.152-.082A9 9 0 1015.68 4.534a7.46 7.46 0 01-2.717-2.248zM15.75 14.25a3.75 3.75 0 11-7.313-1.172c.628.465 1.35.81 2.133 1a5.99 5.99 0 011.925-3.545 3.75 3.75 0 013.255 3.717z" clip-rule="evenodd" />
                     </svg>
-                    <span class="ml-3">Congratulations, You achieved this goal!</span>
+                    <span class="ml-3">Achieved</span>
                   <% else %>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 dark:text-official">
                       <path fill-rule="evenodd" d="M14.615 1.595a.75.75 0 01.359.852L12.982 9.75h7.268a.75.75 0 01.548 1.262l-10.5 11.25a.75.75 0 01-1.272-.71l1.992-7.302H3.75a.75.75 0 01-.548-1.262l10.5-11.25a.75.75 0 01.913-.143z" clip-rule="evenodd" />
@@ -89,7 +89,15 @@
                       <span class="ml-3">Mark goal as complete</span>
                     </a>
                   <% end %>
+                </div>
 
+                <div class="flex items-right mr-6">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 dark:text-official">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                  </svg>
+                  <a href={~p"/my/goals/#{goal.id}"} onclick="return confirm('Are you sure you want to delete?')">
+                    <span class="ml-3">Delete Goal</span>
+                  </a>
                 </div>
               </div>
 
@@ -118,7 +126,12 @@
                       <div class="flex-auto rounded-md p-3 ring-1 ring-inset ring-gray-200">
                         <div class="flex justify-between gap-x-4">
                           <div class="py-0.5 text-xs leading-5 text-gray-500"><span class="font-medium text-gray-900"><%= goal_comment.creator.username %></span> commented</div>
-                          <time datetime="2023-01-23T15:56" class="flex-none py-0.5 text-xs leading-5 text-gray-500">3d ago</time>
+                          <%= if goal_comment.creator.id == @current_user.id do %>
+                            <a href={~p"/my/goal_comment/#{goal_comment.id}"}>
+                              <p class="flex-none py-0.5 text-xs leading-5 text-gray-500">Delete</p>
+                            </a>
+                          <% end %>
+                          <time class="flex-none py-0.5 text-xs leading-5 text-gray-500"><%= FlysterWeb.SharedComponents.convert_date(goal_comment.inserted_at) %></time>
                         </div>
                         <p class="text-sm leading-6 text-gray-500"><%= goal_comment.comment %></p>
                       </div>

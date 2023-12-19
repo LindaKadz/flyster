@@ -23,7 +23,7 @@ defmodule Flyster.Events.Event do
 
     belongs_to :event_type, Flyster.Events.EventType
     belongs_to :host, Flyster.Accounts.User, foreign_key: :host_id
-    has_many :attending_events, Flyster.Events.AttendingEvent
+    has_many :attending_events, Flyster.Events.AttendingEvent, on_delete: :delete_all
     has_many :attendees, through: [:attending_events, :user]
 
     timestamps()

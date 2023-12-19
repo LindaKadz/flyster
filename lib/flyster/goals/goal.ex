@@ -13,7 +13,7 @@ defmodule Flyster.Goals.Goal do
     field :category, :string
     field :private, :boolean
     belongs_to :creator, Flyster.Accounts.User
-    has_many :comments, Flyster.Goals.GoalComment
+    has_many :comments, Flyster.Goals.GoalComment, on_delete: :delete_all
 
     timestamps()
   end

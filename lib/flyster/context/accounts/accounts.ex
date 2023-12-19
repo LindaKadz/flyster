@@ -537,4 +537,25 @@ defmodule Flyster.Context.Accounts do
   def get_user_profile(id) do
     id |> get_user! |> Repo.preload(:role)
   end
+
+  def delete_account(user)do
+     user
+     |> delete_user_activities
+     |> Repo.delete
+   end
+
+   defp delete_user_activities(user) do
+     Flyster.Context.Events.all_my_events(user.id) |> delete_activity
+     Flyster.Context.Goals.all_my_comments(user.id) |> delete_activity
+     Flyster.Context.Goals.all_my_goals(user.id) |> delete_activity
+     Flyster.Context.Challenges.all_my_challenges(user.id) |> delete_activity
+
+     user
+   end
+
+   defp delete_activity(activity) do
+     if Enum.any?(activity) do
+       Enum.each(activity, fn a -> Repo.delete(a) end)
+     end
+   end
 end
