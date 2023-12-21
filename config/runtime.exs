@@ -63,6 +63,10 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
+  config :scaffold, FlysterWeb.Endpoint,
+    url: [host: host, port: 443, scheme: "https"],
+    force_ssl: [rewrite_on: [:x_forwarded_proto]]
+
   # ## SSL Support
   #
   # To get SSL working, you will need to add the `https` key
