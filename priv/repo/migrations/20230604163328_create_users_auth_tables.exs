@@ -18,6 +18,7 @@ defmodule Flyster.Repo.Migrations.CreateUsersAuthTables do
       add :cover_picture, :string
       add :phone_number, :string
       add :terms_of_service, :boolean
+      add :group, :string
       add :email, :citext, null: false
       add :hashed_password, :string, null: false
       add :confirmed_at, :naive_datetime

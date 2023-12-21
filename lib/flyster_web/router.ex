@@ -72,7 +72,7 @@ defmodule FlysterWeb.Router do
 
       # user profile
       live "/users/:id/profile", ProfileShowLive, :show
-      live "/users/:id", UserProfileDeleteLive, :delete
+      live "/users/:id/delete", UserProfileDeleteLive, :delete
 
       #events
       live "/events", EventsIndexLive, :index
@@ -95,6 +95,10 @@ defmodule FlysterWeb.Router do
       live "/challenges/new", ChallengesNewLive, :new
       live "/my/challenges", MyChallengesIndexLive, :index
       live "/my/challenges/:id", MyChallengesDeleteLive, :delete
+
+      #feedback
+      live "/feedback/new", NewFeedbackLive, :new
+      live "/feedback", IndexFeedbackLive, :index
     end
   end
 

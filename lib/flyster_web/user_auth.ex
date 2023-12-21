@@ -84,7 +84,7 @@ defmodule FlysterWeb.UserAuth do
     conn
     |> renew_session()
     |> delete_resp_cookie(@remember_me_cookie)
-    |> redirect(to: ~p"/goals")
+    |> redirect(to: ~p"/")
   end
 
   @doc """
@@ -226,5 +226,5 @@ defmodule FlysterWeb.UserAuth do
 
   defp maybe_store_return_to(conn), do: conn
 
-  defp signed_in_path(_conn), do: ~p"/"
+  defp signed_in_path(_conn), do: ~p"/goals"
 end

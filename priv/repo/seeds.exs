@@ -21,12 +21,12 @@ modules = [User, Role, EventType]
 
 Enum.each(modules, fn module -> Repo.delete_all(module) end)
 
-roles = ["Instructor", "Lyra Performer", "Photographer", "Pole Dancer", "Silks Performer", "Stripper"]
+roles = ["Fire Dancer", "Lyra Performer", "Pole Dancer", "Silks Performer", "Other Dancer"]
 
 Enum.each(roles, fn role -> Accounts.create_role(role) end)
 IO.puts "Roles Created!"
 
-event_types = ["Retreat", "Photoshoot", "Pole in the Park", "Pop Up"]
+event_types = ["Retreat", "Photoshoot", "Pole in the Park", "Pop Up", "Flash Mob"]
 
 Enum.each(event_types, fn event -> Events.create_event_type(event) end)
 IO.puts "Event Types Created!"

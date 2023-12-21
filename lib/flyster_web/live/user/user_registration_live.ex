@@ -15,7 +15,8 @@ defmodule FlysterWeb.UserRegistrationLive do
     {:ok, socket, temporary_assigns: [form: nil]}
   end
 
-  def handle_event("save", %{"user" => user_params}, socket) do
+  def handle_event("save", %{"user" => params}, socket) do
+    user_params = Map.put(params, "group", "dancer")
     case Accounts.register_user(user_params) do
       {:ok, user} ->
         {:ok, _} =
