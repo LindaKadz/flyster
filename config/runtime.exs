@@ -63,7 +63,7 @@ if config_env() == :prod do
     ],
     secret_key_base: secret_key_base
 
-  config :scaffold, FlysterWeb.Endpoint,
+  config :flyster, FlysterWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
     force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
