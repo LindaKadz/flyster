@@ -12,7 +12,7 @@ config :flyster,
 
 # Configures the endpoint
 config :flyster, FlysterWeb.Endpoint,
-  url: [host: "localhost"],
+  url: [host: "www.mycheza.com"],
   render_errors: [
     formats: [html: FlysterWeb.ErrorHTML, json: FlysterWeb.ErrorJSON],
     layout: false
