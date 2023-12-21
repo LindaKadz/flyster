@@ -9,7 +9,7 @@ defmodule FlysterWeb.MyChallengesIndexLive do
 
     socket =
       socket
-      |> assign(trigger_submit: false, check_errors: false, current_user: current_user, challenges: challenges)
+      |> assign(current_user: current_user, challenges: challenges)
 
     {:ok, socket}
   end

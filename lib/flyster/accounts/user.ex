@@ -19,6 +19,7 @@ defmodule Flyster.Accounts.User do
     field :phone_number, :string
     field :email, :string
     field :profile_picture, :string
+    field :group, :string
     field :cover_picture, :string
     field :password, :string, virtual: true, redact: true
     field :hashed_password, :string, redact: true
@@ -32,6 +33,7 @@ defmodule Flyster.Accounts.User do
     has_many :goals, Flyster.Goals.Goal, foreign_key: :creator_id, on_delete: :delete_all
     has_many :challenges, Flyster.Challenges.Challenge, foreign_key: :creator_id, on_delete: :delete_all
     has_many :goal_comments, Flyster.Goals.GoalComment, foreign_key: :creator_id, on_delete: :delete_all
+    has_many :requests, Flyster.Feedback.Request
 
     timestamps()
   end
@@ -61,7 +63,7 @@ defmodule Flyster.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :role_id, :terms_of_service, :level])
+    |> cast(attrs, [:email, :password, :first_name, :last_name, :username, :role_id, :terms_of_service, :level, :group])
     |> validate_email(opts)
     |> validate_password(opts)
     |> validate_user_details
