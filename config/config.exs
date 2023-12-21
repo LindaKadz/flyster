@@ -11,14 +11,24 @@ config :flyster,
   ecto_repos: [Flyster.Repo]
 
 # Configures the endpoint
+host = System.get_env("PHX_HOST") || "https://www.mycheza.com"
+
 config :flyster, FlysterWeb.Endpoint,
-  url: [host: "www.mycheza.com"],
+  url: [host: host],
   render_errors: [
     formats: [html: FlysterWeb.ErrorHTML, json: FlysterWeb.ErrorJSON],
     layout: false
   ],
   pubsub_server: Flyster.PubSub,
-  live_view: [signing_salt: "8UuoVBn9"]
+  live_view: [signing_salt: "8UuoVBn9"],
+  check_origin: [
+    "http://localhost:4000/",
+    "https://www.mycheza.com",
+    "http://www.mycheza.com",
+    "https://mycheza-e47e5d6c5217.herokuapp.com/",
+    "https://mycheza.com",
+    "http://mycheza.com"
+  ]
 
 # Configures the mailer
 #
