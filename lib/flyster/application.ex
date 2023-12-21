@@ -24,6 +24,7 @@ defmodule Flyster.Application do
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
+    Logger.add_backend(Sentry.LoggerBackend)
     opts = [strategy: :one_for_one, name: Flyster.Supervisor]
     Supervisor.start_link(children, opts)
   end
