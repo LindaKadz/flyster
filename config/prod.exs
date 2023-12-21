@@ -13,5 +13,17 @@ config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Flyster.Finch
 # Do not print debug messages in production
 config :logger, level: :info
 
+# error reporting
+
+config :sentry,
+  dsn: "https://ced583c9cd2e241a1e38857d77e14bf3@o4506431515983872.ingest.sentry.io/4506431524175872",
+  environment_name: :prod,
+  enable_source_code_context: true,
+  root_source_code_path: File.cwd!(),
+  tags: %{
+    env: "production"
+  },
+  included_environments: [:prod]
+
 # Runtime production configuration, including reading
 # of environment variables, is done on config/runtime.exs.
