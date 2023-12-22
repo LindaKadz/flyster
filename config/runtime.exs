@@ -53,6 +53,7 @@ if config_env() == :prod do
 
   config :flyster, FlysterWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
+    force_ssl: [rewrite_on: [:x_forwarded_proto]],
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
@@ -62,10 +63,6 @@ if config_env() == :prod do
       port: port
     ],
     secret_key_base: secret_key_base
-
-  config :flyster, FlysterWeb.Endpoint,
-    url: [host: host, port: 443, scheme: "https"],
-    force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
   # ## SSL Support
   #
