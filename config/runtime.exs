@@ -94,8 +94,8 @@ if config_env() == :prod do
   # We also recommend setting `force_ssl` in your endpoint, ensuring
   # no data is ever sent via http, always redirecting to https:
   #
-config :flyster, FlysterWeb.Endpoint,
-    force_ssl: [hsts: true]
+# config :flyster, FlysterWeb.Endpoint,
+#     force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 

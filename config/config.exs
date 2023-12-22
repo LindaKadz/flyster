@@ -20,7 +20,8 @@ config :flyster, FlysterWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Flyster.PubSub,
-  live_view: [signing_salt: "8UuoVBn9"]
+  live_view: [signing_salt: "8UuoVBn9"],
+  check_origin: ["https://www.mycheza.com", "https://mycheza.com", "http://www.mycheza.com"]
 
 # Configures the mailer
 #
