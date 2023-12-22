@@ -24,10 +24,8 @@ config :flyster, FlysterWeb.Endpoint,
   check_origin: [
     "http://localhost:4000/",
     "https://www.mycheza.com",
-    "http://www.mycheza.com",
     "https://mycheza-e47e5d6c5217.herokuapp.com/",
     "https://mycheza.com",
-    "http://mycheza.com"
   ]
 
 # Configures the mailer
