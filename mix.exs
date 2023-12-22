@@ -19,7 +19,7 @@ defmodule Flyster.MixProject do
   def application do
     [
       mod: {Flyster.Application, []},
-      extra_applications: [:logger, :runtime_tools, :ssl]
+      extra_applications: [:ssl, :logger, :runtime_tools]
     ]
   end
 
