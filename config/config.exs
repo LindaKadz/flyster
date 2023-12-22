@@ -20,13 +20,7 @@ config :flyster, FlysterWeb.Endpoint,
     layout: false
   ],
   pubsub_server: Flyster.PubSub,
-  live_view: [signing_salt: "8UuoVBn9"],
-  check_origin: [
-    "http://localhost:4000/",
-    "https://www.mycheza.com",
-    "https://mycheza-e47e5d6c5217.herokuapp.com/",
-    "https://mycheza.com",
-  ]
+  live_view: [signing_salt: "8UuoVBn9"]
 
 # Configures the mailer
 #
