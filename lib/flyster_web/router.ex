@@ -22,6 +22,8 @@ defmodule FlysterWeb.Router do
 
     get "/", PageController, :home
     get "/about", PageController, :about
+    get "/terms", PageController, :terms
+    get "/privacy", PageController, :privacy
   end
 
   # Other scopes may use custom stacks.

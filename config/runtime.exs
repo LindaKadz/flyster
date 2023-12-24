@@ -48,11 +48,12 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "https://www.mycheza.com"
+  host = System.get_env("PHX_HOST") || "www.mycheza.com"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :flyster, FlysterWeb.Endpoint,
     url: [host: host, port: 443, scheme: "https"],
+    force_ssl: [rewrite_on: [:x_forwarded_proto]],
     http: [
       # Enable IPv6 and bind on all interfaces.
       # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
@@ -62,10 +63,6 @@ if config_env() == :prod do
       port: port
     ],
     secret_key_base: secret_key_base
-
-  config :flyster, FlysterWeb.Endpoint,
-    url: [host: host, port: 443, scheme: "https"],
-    force_ssl: [rewrite_on: [:x_forwarded_proto]]
 
   # ## SSL Support
   #
@@ -94,8 +91,8 @@ if config_env() == :prod do
   # We also recommend setting `force_ssl` in your endpoint, ensuring
   # no data is ever sent via http, always redirecting to https:
   #
-config :flyster, FlysterWeb.Endpoint,
-    force_ssl: [hsts: true]
+# config :flyster, FlysterWeb.Endpoint,
+#     force_ssl: [hsts: true]
   #
   # Check `Plug.SSL` for all available options in `force_ssl`.
 
