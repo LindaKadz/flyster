@@ -36,10 +36,12 @@ defmodule FlysterWeb.GoalsNewLive do
 
   defp goal_category_types do
     goal_types = [
+      %{name: "Active Flexibility", value: "Active Flexibility"},
+      %{name: "Fire Dance", value: "Fire Dance"},
+      %{name: "Hoops", value: "Hoops"},
       %{name: "Pole", value: "Pole"},
       %{name: "Silks", value: "Silks"},
-      %{name: "Hoops", value: "Hoops"},
-      %{name: "Fire Dance", value: "Fire Dance"}
+      %{name: "Splits", value: "Splits"}
     ]
     Enum.map(goal_types, &{&1.name, &1.value})
   end

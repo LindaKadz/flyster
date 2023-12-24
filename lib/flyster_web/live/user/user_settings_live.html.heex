@@ -58,7 +58,7 @@
             </div>
           </div>
 
-          <div class="sm:col-span-4">
+          <div class="sm:col-span-3">
             <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
             <div class="mt-2">
               <.input
@@ -68,6 +68,19 @@
                 required
               />
             </div>
+          </div>
+
+          <div class="sm:col-span-3">
+            <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">How do you want us to address you?</label>
+            <div class="mt-2">
+              <.input
+              field={@public_info_form[:preferred_name]}
+              options={preferred_names()}
+              type="select"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+              required />
+            </div>
+            <p class="text-xs leading-5 text-gray-600"> We are the only ones who will be calling you this. </p>
           </div>
 
           <div class="sm:col-span-3">

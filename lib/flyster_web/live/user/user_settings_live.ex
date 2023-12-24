@@ -217,6 +217,17 @@ defmodule FlysterWeb.UserSettingsLive do
     Enum.map(challenge_level_types, &{&1.name, &1.value})
   end
 
+  defp preferred_names do
+    preferred_names = [
+      %{name: "Babe", value: "Babe"},
+      %{name: "Bitch", value: "Bitch"},
+      %{name: "Honey", value: "Honey"},
+      %{name: "Sweetie", value: "Sweetie"},
+      %{name: "Sweetheart", value: "Sweetheart"}
+    ]
+    Enum.map(preferred_names, &{&1.name, &1.value})
+  end
+
   defp country_options() do
     FlysterWeb.SharedComponents.country_options()
   end
