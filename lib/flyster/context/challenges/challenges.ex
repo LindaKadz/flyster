@@ -96,4 +96,31 @@ defmodule Flyster.Context.Challenges do
 
   """
   def get_challenge!(id), do: Repo.get!(Challenge, id)
+
+  @doc """
+  Paginates and sorts challenges
+
+  Criterias:
+  [
+  paginate: %{page: 2, per_page: 5},
+  sort: %{sort_by: :item, sort_order: asc}
+]
+
+  """
+
+  def list_challenges(criteria) when is_list(criteria) do
+    query = from(c in Challenge)
+
+    Enum.reduce(criteria, query, fn
+      {:paginate, %{page: page, per_page: per_page}}, query ->
+        from q in query,
+          offset: ^((page - 1) * per_page),
+          limit: ^per_page
+
+      {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
+        from q in query, order_by: [{^sort_order, ^sort_by}]
+    end)
+    |> Repo.all()
+    |> Repo.preload(:creator)
+  end
 end
