@@ -12,7 +12,7 @@ defmodule Flyster.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Flyster", "no-reply@mycheza.com"})
+      |> from({"My Cheza", "no-reply@mycheza.com"})
       |> subject(subject)
       |> text_body(body)
 
