@@ -104,7 +104,7 @@ if config_env() == :prod do
   #
   config :flyster, Flyster.Mailer,
    adapter: Swoosh.Adapters.Sendgrid,
-   api_key: System.get_env("SENDGRID_API_KEY"),
+   api_key: System.get_env("SENDGRID_API_KEY")
   #
   # For this example you need include a HTTP client required by Swoosh API client.
   # Swoosh supports Hackney and Finch out of the box:
