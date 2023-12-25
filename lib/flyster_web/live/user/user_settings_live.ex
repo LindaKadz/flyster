@@ -223,7 +223,8 @@ defmodule FlysterWeb.UserSettingsLive do
       %{name: "Bitch", value: "Bitch"},
       %{name: "Honey", value: "Honey"},
       %{name: "Sweetie", value: "Sweetie"},
-      %{name: "Sweetheart", value: "Sweetheart"}
+      %{name: "Sweetheart", value: "Sweetheart"},
+      %{name: "Please use my name", value: "None"}
     ]
     Enum.map(preferred_names, &{&1.name, &1.value})
   end
