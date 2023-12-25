@@ -58,7 +58,7 @@
             </div>
           </div>
 
-          <div class="sm:col-span-4">
+          <div class="sm:col-span-3">
             <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">Username</label>
             <div class="mt-2">
               <.input
@@ -68,6 +68,19 @@
                 required
               />
             </div>
+          </div>
+
+          <div class="sm:col-span-3">
+            <label for="last-name" class="block text-sm font-medium leading-6 text-gray-900">How do you want us to address you?</label>
+            <div class="mt-2">
+              <.input
+              field={@public_info_form[:preferred_name]}
+              options={preferred_names()}
+              type="select"
+              class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-official sm:text-sm sm:leading-6"
+              required />
+            </div>
+            <p class="text-xs leading-5 text-gray-600"> We are the only ones who will be calling you this. </p>
           </div>
 
           <div class="sm:col-span-3">
@@ -378,6 +391,32 @@
         </div>
       </:actions>
       </.simple_form>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-x-8 gap-y-8 pt-10 md:grid-cols-3">
+    <div class="px-4 sm:px-0">
+      <h2 class="text-base font-semibold leading-7 text-gray-900">Delete Account</h2>
+      <p class="mt-1 text-sm leading-6 text-gray-600">
+        This action cannot be undone, all your data will be deleted and you will have to create a new account and start a fresh.
+      </p>
+    </div>
+
+    <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+
+      <div class="px-4 py-6 sm:p-8">
+        <div class="max-w-2xl space-y-10">
+          <a href={~p"/users/#{@user.id}/delete"}>
+            <button type="button" data-confirm="This action is irreversible and all your data will be lost, do you want to continue?" class="inline-flex justify-center gap-x-1.5 rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm ring-1 ring-inset ring-white hover:bg-red-600">
+              <svg xmlns="https://www.w3.org/2000/svg" class="-ml-0.5 mr-1.5 h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+              </svg>
+                Delete Account
+              </button>
+            </a>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>

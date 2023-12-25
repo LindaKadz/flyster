@@ -25,6 +25,7 @@ defmodule FlysterWeb.UserSettingsLive do
 
     socket =
       socket
+      |> assign(:user, user)
       |> assign(:current_password, nil)
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, user.email)
@@ -214,6 +215,17 @@ defmodule FlysterWeb.UserSettingsLive do
       %{name: "Advanced", value: "Advanced"}
     ]
     Enum.map(challenge_level_types, &{&1.name, &1.value})
+  end
+
+  defp preferred_names do
+    preferred_names = [
+      %{name: "Babe", value: "Babe"},
+      %{name: "Bitch", value: "Bitch"},
+      %{name: "Honey", value: "Honey"},
+      %{name: "Sweetie", value: "Sweetie"},
+      %{name: "Sweetheart", value: "Sweetheart"}
+    ]
+    Enum.map(preferred_names, &{&1.name, &1.value})
   end
 
   defp country_options() do

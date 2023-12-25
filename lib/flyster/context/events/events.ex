@@ -114,7 +114,7 @@ defmodule Flyster.Context.Events do
   """
 
   def find_event_with_attendees(id) do
-    id |> find_event |> Repo.preload(:attendees)
+    id |> find_event |> Repo.preload([attendees: [:role]])
   end
 
   ### Events

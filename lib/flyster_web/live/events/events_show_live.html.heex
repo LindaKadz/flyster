@@ -5,6 +5,7 @@
       <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
         This event has a cap of only <%= @event.available_spots %> spots,
         <%= remaining_slots(@event.attendees, @event.available_spots) %> spots left.
+        Your email will be shared with the event organize when you register for the event.
       </p>
     <% end %>
   </div>
@@ -80,14 +81,84 @@
                   <% end %>
                 </:actions>
               </.simple_form>
-            <% else %>
-              <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">
-                You have already registered for this event.
-              </p>
             <% end %>
           <% end %>
         </dd>
       </div>
     </dl>
   </div>
+
+  <%= if @event.host_id == @current_user.id do %>
+  <div class="px-4 sm:px-6 lg:px-8">
+  <div class="sm:flex sm:items-center">
+    <div class="sm:flex-auto">
+      <h1 class="text-base font-semibold leading-6 text-gray-900">Event Attendees</h1>
+    </div>
+  </div>
+  <div class="mt-8 flow-root">
+  <%= if Enum.empty?(@event.attendees) do %>
+  <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-900">
+
+  </p>
+  <% else %>
+    <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+        <table class="min-w-full divide-y divide-gray-300">
+          <thead>
+            <tr>
+              <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Name</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Category & Level</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Email</th>
+              <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Location</th>
+            </tr>
+          </thead>
+          <%= for attendee <- @event.attendees do %>
+            <tbody class="divide-y divide-gray-200 bg-white">
+              <tr>
+                <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
+                  <div class="flex items-center">
+                    <div class="h-11 w-11 flex-shrink-0">
+                      <%= if attendee.profile_picture == nil do %>
+                        <svg class="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                          <path fill-rule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clip-rule="evenodd" />
+                        </svg>
+                      <% else %>
+                       <img class="h-11 w-11 rounded-full" src={URI.decode(attendee.profile_picture)}/>
+                      <% end %>
+                    </div>
+                    <div class="ml-4">
+                      <div class="font-medium text-gray-900"><%= attendee.first_name %> <%= attendee.last_name %></div>
+                      <div class="mt-1 text-gray-500">@<%= attendee.username %></div>
+                    </div>
+                  </div>
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <%= if is_nil(attendee.level) do %>
+                    <div class="text-gray-900">Beginner</div>
+                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= attendee.role.name %></span>
+                  <% else %>
+                    <div class="text-gray-900"><%= attendee.level %></div>
+                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= attendee.role.name %></span>
+                  <% end %>
+                </td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500"><%= attendee.email %></td>
+                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                  <%= if is_nil(attendee.city) do %>
+                    <div class="text-gray-900"><%= attendee.country %></div>
+                  <% else %>
+                    <div class="text-gray-900"><%= attendee.city %>, <%= attendee.country %></div>
+                    <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20"><%= attendee.role.name %></span>
+                  <% end %>
+                </td>
+              </tr>
+            </tbody>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  <% end %>
+  </div>
+</div>
+
+  <% end %>
 </div>
