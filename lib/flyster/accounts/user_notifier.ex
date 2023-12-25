@@ -12,7 +12,7 @@ defmodule Flyster.Accounts.UserNotifier do
     email =
       new()
       |> to(recipient)
-      |> from({"Flyster", "contact@example.com"})
+      |> from({"Flyster", "no-reply@mycheza.com"})
       |> subject(subject)
       |> text_body(body)
 
@@ -29,7 +29,7 @@ defmodule Flyster.Accounts.UserNotifier do
 
     ==============================
 
-    Hi #{user.email},
+    Hi #{user.first_name},
 
     You can confirm your account by visiting the URL below:
 
@@ -49,7 +49,7 @@ defmodule Flyster.Accounts.UserNotifier do
 
     ==============================
 
-    Hi #{user.email},
+    Hi #{user.first_name},
 
     You can reset your password by visiting the URL below:
 
@@ -69,7 +69,7 @@ defmodule Flyster.Accounts.UserNotifier do
 
     ==============================
 
-    Hi #{user.email},
+    Hi #{user.first_name},
 
     You can change your email by visiting the URL below:
 
