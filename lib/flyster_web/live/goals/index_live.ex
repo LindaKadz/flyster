@@ -7,7 +7,7 @@ defmodule FlysterWeb.GoalsIndexLive do
   def mount(_params, _session, socket) do
     changeset = Goals.goal_comment_changeset(%GoalComment{})
     current_user = socket.assigns.current_user
-    goals = Goals.all_public_goals()
+    goals = Goals.all_public_goals() |> Enum.shuffle()
 
     socket =
       socket
