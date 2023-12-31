@@ -110,6 +110,8 @@ if config_env() == :prod do
   # Swoosh supports Hackney and Finch out of the box:
   #
   config :swoosh, :api_client, Swoosh.ApiClient.Hackney
+
+  config :flyster, upload_path: Application.app_dir(:flyster, "priv/static/uploads")
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
