@@ -10,14 +10,13 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.]
 
-alias Flyster.Accounts.User
 alias Flyster.Accounts.Role
 alias Flyster.Context.Accounts
 alias Flyster.Context.Events
 alias Flyster.Events.EventType
 alias Flyster.Repo
 
-modules = [User, Role, EventType]
+modules = [Role, EventType]
 
 Enum.each(modules, fn module -> Repo.delete_all(module) end)
 
