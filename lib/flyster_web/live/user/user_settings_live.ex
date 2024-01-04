@@ -30,18 +30,18 @@ defmodule FlysterWeb.UserSettingsLive do
       |> assign(:email_form_current_password, nil)
       |> assign(:current_email, user.email)
       |> assign(:uploaded_files, [])
-      |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg), max_entries: 1)
-      |> allow_upload(:cover_picture, accept: ~w(.jpg .jpeg), max_entries: 1)
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:public_info_form, to_form(public_info_changeset))
       |> assign(:personal_info_form, to_form(personal_info_changeset))
       |> assign(:trigger_submit, false)
+      |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1, auto_upload: true, external: &presign_entry/2)
+      |> allow_upload(:cover_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1, auto_upload: true, external: &presign_entry/2)
 
     {:ok, socket}
   end
 
-  # Validations
+  # Events
 
   def handle_event(action, params, socket) do
     cond do
@@ -123,7 +123,7 @@ defmodule FlysterWeb.UserSettingsLive do
         user = socket.assigns.current_user
 
         case Accounts.apply_private_info_changes(user, params["user"]) do
-          {:ok, user} ->
+          {:ok, _user} ->
             info = "Private Information successfully updated."
 
             {:noreply,
@@ -167,6 +167,16 @@ defmodule FlysterWeb.UserSettingsLive do
     end
   end
 
+  defp presign_entry(entry, socket) do
+    bucket = Application.fetch_env!(:flyster, :bucket)
+    key = "public/#{entry.client_name}"
+
+    {:ok, presigned_url} = ExAws.Config.new(:s3) |> ExAws.S3.presigned_url(:put, bucket, key)
+    meta = %{uploader: "S3", bucket: bucket, key: key, url: presigned_url}
+
+    {:ok, meta, socket}
+  end
+
   defp picture_uploads_absent?(socket) do
     Enum.empty?(socket.assigns.uploads.profile_picture.entries) && Enum.empty?(socket.assigns.uploads.cover_picture.entries)
   end
@@ -176,14 +186,12 @@ defmodule FlysterWeb.UserSettingsLive do
   end
 
   defp consume_picture(socket, field) do
-    [file_path | _] =
-      consume_uploaded_entries(socket, field, fn %{path: path}, _entry ->
-        dest = Path.join([:code.priv_dir(:flyster), "static", "uploads", Path.basename(path)])
-        File.cp!(path, dest)
-        {:ok, ~p"/uploads/#{Path.basename(dest)}"}
-      end)
+    presigned_url = consume_uploaded_entries(socket, field, fn %{} = meta, _entry ->
+        ExAws.Config.new(:s3)
+        |> ExAws.S3.presigned_url(:get, meta.bucket, meta.key, expires_in: 86_400)
+    end)
 
-    file_path
+    List.first(presigned_url)
   end
 
   defp update_public_info(socket, user, user_params) do

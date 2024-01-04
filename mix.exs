@@ -54,7 +54,11 @@ defmodule Flyster.MixProject do
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_cldr_territories, "~> 2.4.1"},
       {:sentry, "~> 10.1.0"},
-      {:hackney, "~> 1.8"}
+      {:hackney, "~> 1.9"},
+      {:ex_aws, "~> 2.1"},
+      {:ex_aws_s3, "~> 2.0"},
+      {:sweet_xml, "~> 0.6"},
+      {:configparser_ex, "~> 4.0"}
     ]
   end
 
