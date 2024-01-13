@@ -44,12 +44,13 @@ defmodule FlysterWeb.UserSettingsLive do
   # Events
 
   def handle_event(action, params, socket) do
+    user = socket.assigns.current_user
     cond do
       action == "validate_email" ->
         %{"current_password" => password, "user" => user_params} = params
 
         email_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_user_email(user_params)
           |> Map.put(:action, :validate)
           |> to_form()
@@ -60,7 +61,7 @@ defmodule FlysterWeb.UserSettingsLive do
         %{"current_password" => password, "user" => user_params} = params
 
         password_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_user_password(user_params)
           |> Map.put(:action, :validate)
           |> to_form()
@@ -69,7 +70,7 @@ defmodule FlysterWeb.UserSettingsLive do
 
       action == "validate_public_info" ->
         public_info_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_public_info(params["user"])
           |> Map.put(:action, :validate)
           |> to_form()
@@ -78,7 +79,7 @@ defmodule FlysterWeb.UserSettingsLive do
 
       action == "validate_personal_info" ->
         personal_info_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_private_info(params["user"])
           |> Map.put(:action, :validate)
           |> to_form()
@@ -87,7 +88,6 @@ defmodule FlysterWeb.UserSettingsLive do
 
       action == "update_email" ->
         %{"current_password" => password, "user" => user_params} = params
-        user = socket.assigns.current_user
 
         case Accounts.apply_user_email(user, password, user_params) do
           {:ok, applied_user} ->
@@ -105,7 +105,6 @@ defmodule FlysterWeb.UserSettingsLive do
         end
       action == "update_password" ->
         %{"current_password" => password, "user" => user_params} = params
-        user = socket.assigns.current_user
 
         case Accounts.update_user_password(user, password, user_params) do
           {:ok, user} ->
@@ -120,8 +119,6 @@ defmodule FlysterWeb.UserSettingsLive do
             {:noreply, assign(socket, password_form: to_form(changeset))}
         end
       action == "update_personal_info" ->
-        user = socket.assigns.current_user
-
         case Accounts.apply_private_info_changes(user, params["user"]) do
           {:ok, _user} ->
             info = "Private Information successfully updated."
@@ -135,12 +132,12 @@ defmodule FlysterWeb.UserSettingsLive do
             {:noreply, assign(socket, personal_info_form: to_form(changeset))}
         end
       action == "update_public_info" ->
-        public_info_data(params, socket)
+        public_info_data(params, socket, user)
     end
   end
 
-  defp public_info_data(params, socket) do
-    user = socket.assigns.current_user
+  defp public_info_data(params, socket, user) do
+    IO.inspect params
 
     cond do
       picture_uploads_absent?(socket) ->
