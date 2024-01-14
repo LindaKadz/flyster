@@ -35,8 +35,8 @@ defmodule FlysterWeb.UserSettingsLive do
       |> assign(:public_info_form, to_form(public_info_changeset))
       |> assign(:personal_info_form, to_form(personal_info_changeset))
       |> assign(:trigger_submit, false)
-      |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1, auto_upload: true, external: &presign_entry/2)
-      |> allow_upload(:cover_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1, auto_upload: true, external: &presign_entry/2)
+      |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1)
+      |> allow_upload(:cover_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1)
 
     {:ok, socket}
   end
@@ -164,16 +164,6 @@ defmodule FlysterWeb.UserSettingsLive do
     end
   end
 
-  defp presign_entry(entry, socket) do
-    bucket = Application.fetch_env!(:flyster, :bucket)
-    key = "public/#{entry.client_name}"
-
-    {:ok, presigned_url} = ExAws.Config.new(:s3) |> ExAws.S3.presigned_url(:put, bucket, key)
-    meta = %{uploader: "S3", bucket: bucket, key: key, url: presigned_url}
-
-    {:ok, meta, socket}
-  end
-
   defp picture_uploads_absent?(socket) do
     Enum.empty?(socket.assigns.uploads.profile_picture.entries) && Enum.empty?(socket.assigns.uploads.cover_picture.entries)
   end
@@ -183,12 +173,37 @@ defmodule FlysterWeb.UserSettingsLive do
   end
 
   defp consume_picture(socket, field) do
-    presigned_url = consume_uploaded_entries(socket, field, fn %{} = meta, _entry ->
-        ExAws.Config.new(:s3)
-        |> ExAws.S3.presigned_url(:get, meta.bucket, meta.key, expires_in: 86_400)
-    end)
+    url =
+      if field == :profile_picture do
+        consume_uploaded_entries(socket, field, fn %{path: path}, _entry ->
+          image = List.first(socket.assigns.uploads.profile_picture.entries)
+          file_uuid = image.uuid
+          image_filename = image.client_name
+          unique_filename = "#{file_uuid}-#{image_filename}"
+          {:ok, image_binary} = File.read(path)
+          bucket_name = "mycheza"
 
-    List.first(presigned_url)
+          ExAws.S3.put_object(bucket_name, "profile/#{unique_filename}", image_binary)
+          |> ExAws.request!
+
+          {:ok, "https://#{bucket_name}.s3.amazonaws.com/profile/#{unique_filename}"}
+       end)
+      else
+        consume_uploaded_entries(socket, field, fn %{path: path}, _entry ->
+          image = List.first(socket.assigns.uploads.cover_picture.entries)
+          file_uuid = image.uuid
+          image_filename = image.client_name
+          unique_filename = "#{file_uuid}-#{image_filename}"
+          {:ok, image_binary} = File.read(path)
+          bucket_name = bucket = Application.fetch_env!(:flyster, :bucket)
+
+          ExAws.S3.put_object(bucket_name, "profile/#{unique_filename}", image_binary)
+          |> ExAws.request!
+
+          {:ok, "https://#{bucket_name}.s3.amazonaws.com/profile/#{unique_filename}"}
+       end)
+      end
+     List.first(url)
   end
 
   defp update_public_info(socket, user, user_params) do

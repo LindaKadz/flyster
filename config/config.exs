@@ -64,11 +64,20 @@ config :phoenix, :json_library, Jason
 
 # Configure :ex_aws
 
+# config :ex_aws,
+#   access_key_id: [System.get_env("AWS_ACCESS_KEY_ID"), :instance_role],
+#   bucket: System.get_env("BUCKET_NAME"),
+#   secret_access_key: [System.get_env("AWS_SECRET_ACCESS_KEY"), :instance_role],
+#   region: "us-east-2"
+
 config :ex_aws,
-  access_key_id: [System.get_env("AWS_ACCESS_KEY_ID"), :instance_role],
-  bucket: System.get_env("BUCKET_NAME"),
-  secret_access_key: [System.get_env("AWS_SECRET_ACCESS_KEY"), :instance_role],
-  region: "us-east-2"
+  access_key_id: "AKIA5FNPCKLJJTYGACX6",
+  secret_access_key: "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",
+  s3: [
+   scheme: "https://",
+   host: "mycheza.s3.amazonaws.com",
+   region:  "us-east-2"
+  ]
 
 config :flyster,
   bucket: System.get_env("BUCKET_NAME"), # <- The name of your bucket
