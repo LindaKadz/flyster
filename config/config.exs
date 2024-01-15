@@ -64,12 +64,6 @@ config :phoenix, :json_library, Jason
 
 # Configure :ex_aws
 
-# config :ex_aws,
-#   access_key_id: [System.get_env("AWS_ACCESS_KEY_ID"), :instance_role],
-#   bucket: System.get_env("BUCKET_NAME"),
-#   secret_access_key: [System.get_env("AWS_SECRET_ACCESS_KEY"), :instance_role],
-#   region: "us-east-2"
-
 config :ex_aws,
   access_key_id: System.get_env("AWS_ACCESS_KEY_ID"),
   secret_access_key: System.get_env("AWS_SECRET_ACCESS_KEY"),
