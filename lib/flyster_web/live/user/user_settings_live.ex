@@ -181,12 +181,12 @@ defmodule FlysterWeb.UserSettingsLive do
           image_filename = image.client_name
           unique_filename = "#{file_uuid}-#{image_filename}"
           {:ok, image_binary} = File.read(path)
-          bucket_name = "mycheza"
+          bucket_name = System.get_env("BUCKET_NAME")
 
-          ExAws.S3.put_object(bucket_name, "profile/#{unique_filename}", image_binary)
+          ExAws.S3.put_object(bucket_name, "#{unique_filename}", image_binary)
           |> ExAws.request!
 
-          {:ok, "https://#{bucket_name}.s3.amazonaws.com/profile/#{unique_filename}"}
+          {:ok, "https://#{bucket_name}.s3.amazonaws.com/#{bucket_name}/#{unique_filename}"}
        end)
       else
         consume_uploaded_entries(socket, field, fn %{path: path}, _entry ->
@@ -197,10 +197,10 @@ defmodule FlysterWeb.UserSettingsLive do
           {:ok, image_binary} = File.read(path)
           bucket_name = bucket = Application.fetch_env!(:flyster, :bucket)
 
-          ExAws.S3.put_object(bucket_name, "profile/#{unique_filename}", image_binary)
+          ExAws.S3.put_object(bucket_name, "#{unique_filename}", image_binary)
           |> ExAws.request!
 
-          {:ok, "https://#{bucket_name}.s3.amazonaws.com/profile/#{unique_filename}"}
+            {:ok, "https://#{bucket_name}.s3.amazonaws.com/#{bucket_name}/#{unique_filename}"}
        end)
       end
      List.first(url)
