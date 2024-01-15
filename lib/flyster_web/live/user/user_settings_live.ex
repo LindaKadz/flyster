@@ -35,8 +35,8 @@ defmodule FlysterWeb.UserSettingsLive do
       |> assign(:public_info_form, to_form(public_info_changeset))
       |> assign(:personal_info_form, to_form(personal_info_changeset))
       |> assign(:trigger_submit, false)
-      |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1, auto_upload: true, external: &presign_entry/2)
-      |> allow_upload(:cover_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1, auto_upload: true, external: &presign_entry/2)
+      |> allow_upload(:profile_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1)
+      |> allow_upload(:cover_picture, accept: ~w(.jpg .jpeg .png), max_entries: 1)
 
     {:ok, socket}
   end
@@ -44,12 +44,13 @@ defmodule FlysterWeb.UserSettingsLive do
   # Events
 
   def handle_event(action, params, socket) do
+    user = socket.assigns.current_user
     cond do
       action == "validate_email" ->
         %{"current_password" => password, "user" => user_params} = params
 
         email_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_user_email(user_params)
           |> Map.put(:action, :validate)
           |> to_form()
@@ -60,7 +61,7 @@ defmodule FlysterWeb.UserSettingsLive do
         %{"current_password" => password, "user" => user_params} = params
 
         password_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_user_password(user_params)
           |> Map.put(:action, :validate)
           |> to_form()
@@ -69,7 +70,7 @@ defmodule FlysterWeb.UserSettingsLive do
 
       action == "validate_public_info" ->
         public_info_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_public_info(params["user"])
           |> Map.put(:action, :validate)
           |> to_form()
@@ -78,7 +79,7 @@ defmodule FlysterWeb.UserSettingsLive do
 
       action == "validate_personal_info" ->
         personal_info_form =
-          socket.assigns.current_user
+          user
           |> Accounts.change_private_info(params["user"])
           |> Map.put(:action, :validate)
           |> to_form()
@@ -87,7 +88,6 @@ defmodule FlysterWeb.UserSettingsLive do
 
       action == "update_email" ->
         %{"current_password" => password, "user" => user_params} = params
-        user = socket.assigns.current_user
 
         case Accounts.apply_user_email(user, password, user_params) do
           {:ok, applied_user} ->
@@ -105,7 +105,6 @@ defmodule FlysterWeb.UserSettingsLive do
         end
       action == "update_password" ->
         %{"current_password" => password, "user" => user_params} = params
-        user = socket.assigns.current_user
 
         case Accounts.update_user_password(user, password, user_params) do
           {:ok, user} ->
@@ -120,8 +119,6 @@ defmodule FlysterWeb.UserSettingsLive do
             {:noreply, assign(socket, password_form: to_form(changeset))}
         end
       action == "update_personal_info" ->
-        user = socket.assigns.current_user
-
         case Accounts.apply_private_info_changes(user, params["user"]) do
           {:ok, _user} ->
             info = "Private Information successfully updated."
@@ -135,12 +132,12 @@ defmodule FlysterWeb.UserSettingsLive do
             {:noreply, assign(socket, personal_info_form: to_form(changeset))}
         end
       action == "update_public_info" ->
-        public_info_data(params, socket)
+        public_info_data(params, socket, user)
     end
   end
 
-  defp public_info_data(params, socket) do
-    user = socket.assigns.current_user
+  defp public_info_data(params, socket, user) do
+    IO.inspect params
 
     cond do
       picture_uploads_absent?(socket) ->
@@ -167,16 +164,6 @@ defmodule FlysterWeb.UserSettingsLive do
     end
   end
 
-  defp presign_entry(entry, socket) do
-    bucket = Application.fetch_env!(:flyster, :bucket)
-    key = "public/#{entry.client_name}"
-
-    {:ok, presigned_url} = ExAws.Config.new(:s3) |> ExAws.S3.presigned_url(:put, bucket, key)
-    meta = %{uploader: "S3", bucket: bucket, key: key, url: presigned_url}
-
-    {:ok, meta, socket}
-  end
-
   defp picture_uploads_absent?(socket) do
     Enum.empty?(socket.assigns.uploads.profile_picture.entries) && Enum.empty?(socket.assigns.uploads.cover_picture.entries)
   end
@@ -186,12 +173,37 @@ defmodule FlysterWeb.UserSettingsLive do
   end
 
   defp consume_picture(socket, field) do
-    presigned_url = consume_uploaded_entries(socket, field, fn %{} = meta, _entry ->
-        ExAws.Config.new(:s3)
-        |> ExAws.S3.presigned_url(:get, meta.bucket, meta.key, expires_in: 86_400)
-    end)
+    url =
+      if field == :profile_picture do
+        consume_uploaded_entries(socket, field, fn %{path: path}, _entry ->
+          image = List.first(socket.assigns.uploads.profile_picture.entries)
+          file_uuid = image.uuid
+          image_filename = image.client_name
+          unique_filename = "#{file_uuid}-#{image_filename}"
+          {:ok, image_binary} = File.read(path)
+          bucket_name = System.get_env("BUCKET_NAME")
 
-    List.first(presigned_url)
+          ExAws.S3.put_object(bucket_name, "#{unique_filename}", image_binary)
+          |> ExAws.request!
+
+          {:ok, "https://#{bucket_name}.s3.amazonaws.com/#{bucket_name}/#{unique_filename}"}
+       end)
+      else
+        consume_uploaded_entries(socket, field, fn %{path: path}, _entry ->
+          image = List.first(socket.assigns.uploads.cover_picture.entries)
+          file_uuid = image.uuid
+          image_filename = image.client_name
+          unique_filename = "#{file_uuid}-#{image_filename}"
+          {:ok, image_binary} = File.read(path)
+          bucket_name = bucket = Application.fetch_env!(:flyster, :bucket)
+
+          ExAws.S3.put_object(bucket_name, "#{unique_filename}", image_binary)
+          |> ExAws.request!
+
+            {:ok, "https://#{bucket_name}.s3.amazonaws.com/#{bucket_name}/#{unique_filename}"}
+       end)
+      end
+     List.first(url)
   end
 
   defp update_public_info(socket, user, user_params) do
