@@ -137,12 +137,12 @@ defmodule Flyster.Context.Events do
     event = find_event_with_attendees(event_attendee_params["event_id"])
     user = Flyster.Context.Accounts.get_user!(event_attendee_params["user_id"])
 
-    if !Enum.member?(event.attendees, user) do
-      result = add_attendee_to_event_list(event_attendee_params)
-      Tuple.insert_at(result, 2, "Added")
-    else
+    if Enum.member?(event.attendees, user) do
       result = remove_attendee_from_event_list(event_attendee_params)
       Tuple.insert_at(result, 2, "Removed")
+    else
+      result = add_attendee_to_event_list(event_attendee_params)
+      Tuple.insert_at(result, 2, "Added")
     end
   end
 
