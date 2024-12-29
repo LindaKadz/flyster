@@ -29,6 +29,10 @@ defmodule FlysterWeb.EventsShowLive do
     end
   end
 
+  defp is_user_an_event_attendee?(event_id, current_user_id) do
+    Events.user_is_an_attendee?(event_id, current_user_id)
+  end
+
   defp full_country_name(country_code) do
     FlysterWeb.SharedComponents.full_country_name(country_code)
   end

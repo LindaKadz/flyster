@@ -2,7 +2,6 @@ defmodule FlysterWeb.MyGoalsEditLive do
   use FlysterWeb, :live_view
 
   alias Flyster.Context.Goals
-  alias Flyster.Goals.GoalComment
 
   def mount(%{"id" => id}, _session, socket) do
     goal = Goals.get_goal!(id)

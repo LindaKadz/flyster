@@ -137,8 +137,6 @@ defmodule FlysterWeb.UserSettingsLive do
   end
 
   defp public_info_data(params, socket, user) do
-    IO.inspect params
-
     cond do
       picture_uploads_absent?(socket) ->
         update_public_info(socket, user, params["user"])
@@ -195,7 +193,7 @@ defmodule FlysterWeb.UserSettingsLive do
           image_filename = image.client_name
           unique_filename = "#{file_uuid}-#{image_filename}"
           {:ok, image_binary} = File.read(path)
-          bucket_name = bucket = Application.fetch_env!(:flyster, :bucket)
+          bucket_name = Application.fetch_env!(:flyster, :bucket)
 
           ExAws.S3.put_object(bucket_name, "#{unique_filename}", image_binary)
           |> ExAws.request!

@@ -7,7 +7,7 @@ defmodule FlysterWeb.MyGoalCommentDeleteLive do
     comment = Goals.get_comment!(id)
 
     case Goals.delete_comment(comment) do
-      {:ok, goal} ->
+      {:ok, _goal} ->
         {:ok,
           socket
           |> redirect(to: ~p"/goals")}
