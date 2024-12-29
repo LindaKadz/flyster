@@ -77,7 +77,7 @@ defmodule Flyster.Context.Events do
   end
 
   @doc ~S"""
-  Gets an event from the database
+  Gets an event from the database, with the host details
 
   ## Examples
 
@@ -117,7 +117,22 @@ defmodule Flyster.Context.Events do
     id |> find_event |> Repo.preload([attendees: [:role]])
   end
 
-  ### Events
+  @doc """
+  Checks if current user is in the event attendee list
+
+  ## Examples
+
+      iex> is_user_an_attendee?(event_id, user_id)
+      true/ false
+
+  """
+
+  def user_is_an_attendee?(event_id, user_id) do
+    attendees = find_event_with_attendees(event_id).attendees
+    user = Flyster.Context.Accounts.get_user!(user_id) |> Repo.preload(:role)
+
+    Enum.member?(attendees, user)
+  end
 
   @doc """
   Find out which action needs to happen to the user, then acts accordingly.
@@ -134,10 +149,7 @@ defmodule Flyster.Context.Events do
   """
 
   def update_attendee_list(event_attendee_params) do
-    event = find_event_with_attendees(event_attendee_params["event_id"])
-    user = Flyster.Context.Accounts.get_user!(event_attendee_params["user_id"])
-
-    if Enum.member?(event.attendees, user) do
+    if user_is_an_attendee?(event_attendee_params["event_id"], event_attendee_params["user_id"]) do
       result = remove_attendee_from_event_list(event_attendee_params)
       Tuple.insert_at(result, 2, "Removed")
     else
@@ -146,11 +158,32 @@ defmodule Flyster.Context.Events do
     end
   end
 
+  @doc """
+  Adds user to list of attendees
+
+  ## Examples
+
+      iex> add_attendee_to_event_list(attendee_event_params)
+      %AttendingEvent{id: x, name: y}
+
+  """
+
   defp add_attendee_to_event_list(attendee_event_params) do
     %AttendingEvent{}
     |> AttendingEvent.changeset(attendee_event_params)
     |> Repo.insert()
   end
+
+  @doc """
+  Removes user from list of people attending event.
+
+  ## Examples
+
+      iex> remove_attendee_from_event_list(attendee_event_params)
+      {:ok, _}
+
+  """
+
 
   defp remove_attendee_from_event_list(attendee_event_params) do
     event_id = attendee_event_params["event_id"]
@@ -160,8 +193,7 @@ defmodule Flyster.Context.Events do
               where: e.event_id == ^event_id and e.user_id == ^user_id
 
     query
-    |> Repo.all()
-    |> List.first()
+    |> Repo.one()
     |> Repo.delete()
   end
 
