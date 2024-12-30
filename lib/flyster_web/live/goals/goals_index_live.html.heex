@@ -11,7 +11,7 @@
 
 <div class="divide-gray-900/10">
   <div class="grid md:grid-cols-2">
-    <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2">
+    <div class="bg-white shadow-sm ring-1 ring-gray-900/5 sm:rounded-xl md:col-span-2" id="infinite-scroll" phx-hook="InfiniteScroll" phx-update="append" data-page={inspect @goals}>
       <%= for goal <- @goals do %>
       <!-- component -->
       <div class="bg-cream p-10 flex items-center">
