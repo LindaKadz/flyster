@@ -243,4 +243,7 @@ defmodule Flyster.Context.Events do
   """
 
   def delete_event(event), do: Repo.delete(event)
+
+  def send_end_year_email() do
+  end
 end
