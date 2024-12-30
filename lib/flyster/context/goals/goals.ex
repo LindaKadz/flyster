@@ -70,11 +70,11 @@ defmodule Flyster.Context.Goals do
 
   """
 
-  def all_public_goals do
+  def paginate_all_public_goals(params) do
     query = from goal in Goal,
-              where: goal.private == false
+              where: goal.private == false, preload: [:creator, comments: [:creator]]
 
-    query |> Repo.all() |> Repo.preload([:creator, comments: [:creator]])
+    Repo.paginate(query, params)
   end
 
   @doc ~S"""
@@ -226,7 +226,7 @@ defmodule Flyster.Context.Goals do
 
   ## Examples
 
-      iex> all_my_comments(user_id)
+      iex> all_my_comments(1)
       [%GoalComment{id: x, description: y}, %GoalComment{id: z, description: r}, ...]
 
   """
@@ -235,5 +235,19 @@ defmodule Flyster.Context.Goals do
               where: comment.creator_id == ^user_id
 
     query |> Repo.all()
+  end
+
+  @doc """
+  Returns a list of goals that are paginated.
+
+  ## Examples
+
+      iex> paginate_goals(params)
+      [%Goal{id: x, description: y}, %Goal{id: z, description: r}, ...]
+
+  """
+
+  def paginate_goals(params) do
+
   end
 end

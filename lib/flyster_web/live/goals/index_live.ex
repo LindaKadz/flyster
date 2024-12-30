@@ -4,11 +4,11 @@ defmodule FlysterWeb.GoalsIndexLive do
   alias Flyster.Context.Goals
   alias Flyster.Goals.GoalComment
 
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     changeset = Goals.goal_comment_changeset(%GoalComment{})
     current_user = socket.assigns.current_user
-    goals = Goals.all_public_goals() |> Enum.shuffle()
-
+    goals = Goals.paginate_all_public_goals(params) |> Enum.shuffle()
+    
     socket =
       socket
       |> assign(trigger_submit: false, check_errors: false, current_user: current_user, goals: goals, page_title: "Goals")
