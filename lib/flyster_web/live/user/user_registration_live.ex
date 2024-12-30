@@ -3,6 +3,7 @@ defmodule FlysterWeb.UserRegistrationLive do
 
   alias Flyster.Context.Accounts
   alias Flyster.Accounts.User
+  alias FlysterWeb.UserAuth
 
   def mount(_params, _session, socket) do
     changeset = Accounts.change_user_registration(%User{})
@@ -28,7 +29,7 @@ defmodule FlysterWeb.UserRegistrationLive do
           {:noreply,
             socket
             |> put_flash(:info, "Welcome to My Cheza!")
-            |> redirect(to: ~p"/goals")}
+            |> UserAuth.log_in_user(user)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
