@@ -25,8 +25,10 @@ defmodule FlysterWeb.UserRegistrationLive do
             &url(~p"/users/confirm/#{&1}")
           )
 
-        changeset = Accounts.change_user_registration(user)
-        {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
+          {:noreply,
+            socket
+            |> put_flash(:info, "Welcome to My Cheza!")
+            |> redirect(to: ~p"/goals")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
