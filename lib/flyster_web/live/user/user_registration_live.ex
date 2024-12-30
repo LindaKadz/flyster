@@ -28,8 +28,8 @@ defmodule FlysterWeb.UserRegistrationLive do
 
           {:noreply,
             socket
-            |> put_flash(:info, "Welcome to My Cheza!")
-            |> UserAuth.log_in_user(user)}
+            |> put_flash(:info, "Account created successfully, please proceed to login!")
+            |> redirect(to: ~p"/users/log_in")}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, socket |> assign(check_errors: true) |> assign_form(changeset)}
